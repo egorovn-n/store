@@ -1,18 +1,34 @@
 ﻿import { Injectable } from '@angular/core';
+import { LoginApiService } from './apiservices/login.apiservice';
 
 @Injectable()
 export class LoginService {
-    public const tempUsers = []
-    public login(username: string, password: string) {
-        if (this.isLoggedIn()) {
-            return;
-        }
+    private readonly loginKey = 'login';
+    private readonly adminLogin = 'admin';
 
+    constructor(private loginApiService: LoginApiService) {
 
     }
 
+    public login(email: string, password: string): boolean {
+        if (this.isLoggedIn()) {
+            return true;
+        }
+
+        if (this.loginApiService.login(email, password)){
+            localStorage.setItem(this.loginKey, email);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public register(email: string, password: string): boolean {
+        return this.loginApiService.register(email, password);
+    }
+
     public isLoggedIn(): boolean {
-        return !!localStorage.getItem('login');
+        return !!localStorage.getItem(this.loginKey);
     }
 
     public isAdmin(): boolean {
@@ -20,13 +36,10 @@ export class LoginService {
             return false;
         }
 
-        return localStorage.getItem('login') === 'admin';
+        return localStorage.getItem(this.loginKey) === this.adminLogin;
     }
 
-    private getFakeUsers() {
-        return [
-            {login: 'user', password: 'user'},
-            {login: 'admin', password: 'admin'},
-        ]
+    public logout(): void {
+        localStorage.removeItem(this.loginKey);
     }
 }

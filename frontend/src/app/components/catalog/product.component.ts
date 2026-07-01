@@ -1,4 +1,4 @@
-﻿import {Component, EventEmitter, Input, Output} from '@angular/core';
+﻿import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { ProductIdAndNumberDto } from '../../dtos/product-id-and-number.dto';
 

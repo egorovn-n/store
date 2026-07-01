@@ -1,3 +1,3 @@
 export const environment = {
-    apiUrl: 'TODO'
+    apiUrl: 'input your url'
 };

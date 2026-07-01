@@ -1,15 +1,25 @@
 ﻿import { Component } from '@angular/core';
-import {RouterLink} from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { LoginService } from '../../services/login.service';
 
 @Component({
     selector: 'header-component',
+    templateUrl: './header.component.html',
     imports: [
         RouterLink
     ],
-    templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-    constructor() {
+    constructor(public loginService: LoginService,
+                private router: Router) {
+    }
+
+    public logout(): void {
+        this.loginService.logout();
+        this.router.navigate(['/']).then(
+            () => console.log('logged out'),
+            (err) => console.log(err)
+        );
     }
 }

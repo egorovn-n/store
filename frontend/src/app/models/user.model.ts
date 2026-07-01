@@ -1,11 +1,13 @@
-﻿export class User {
-    public userId: number;
-    public userName: string;
-    public email: string;
+﻿import { RolesEnum } from '../enums/roles.enum'
 
-    constructor(userId: number, userName: string, email: string) {
+export class User {
+    public userId: number;
+    public email: string;
+    public role: RolesEnum;
+
+    constructor(userId: number, email: string, role: RolesEnum) {
         this.userId = userId;
-        this.userName = userName;
         this.email = email;
+        this.role = role;
     }
 }

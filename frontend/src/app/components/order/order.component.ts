@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'order',
-    templateUrl: './order.component.html',
+    templateUrl: './order.component.html'
 })
 export class OrderComponent {
     id: number;

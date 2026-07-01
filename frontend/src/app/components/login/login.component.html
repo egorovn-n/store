@@ -1,6 +1,11 @@
 ﻿<div>
     <p>Электронная почта</p>
-    <input type="text">
+    <input [(ngModel)]="email" type="text" >
     <p>Пароль</p>
-    <input type="password">
+    <input [(ngModel)]="password" type="password">
+    @if (errorText) {
+        <p class="color-danger">{{errorText}}</p>
+    }
+    <br>
+    <button (click)="login()">Войти</button>
 </div>
