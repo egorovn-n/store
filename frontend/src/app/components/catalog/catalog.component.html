@@ -1,0 +1,16 @@
+﻿<div style="width: 30%; display: inline-block; border: black solid 1px;">
+    <product-filters></product-filters>
+</div>
+<div style="width: 65%; display: inline-block;">
+    @for (item of itemsWithNumbers; track item.product.id) {
+        <product
+            [productId]="item.product.id"
+            [productName]="item.product.name"
+            [price]="item.product.price"
+            [productsNumber]="item.productsNumber"
+            (onNumberChange)="onProductNumberChange($event)"
+        ></product>
+    } @empty {
+        Каталог пуст
+    }
+</div>

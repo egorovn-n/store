@@ -1,0 +1,16 @@
+﻿<header>
+    <ul>
+        <li><a routerLink="/">Каталог</a></li>
+        @if (isLoggedIn()) {
+            <li><a routerLink="/cart">Корзина</a></li>
+            <li><a routerLink="/history">История заказов</a></li>
+            @if (isAdmin()) {
+                <li class="right"><a routerLink="/admin">Администрирование</a></li>
+            }
+        }
+        @if (!isLoggedIn()) {
+            <li class="right"><a routerLink="/registration">Регистрация</a></li>
+            <li class="right"><a routerLink="/login">Вход</a></li>
+        }
+    </ul>
+</header>
