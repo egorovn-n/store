@@ -17,7 +17,7 @@ export class CatalogComponent {
     public itemsWithNumbers: ProductAndNumberDto[] = [];
 
     constructor() {
-        this.itemsWithNumbers = this.getFakeItems().map((item) => new ProductAndNumberDto(item, 0));
+        this.setFakeItems();
     }
 
     public onProductNumberChange(productIdAndNumberDto: ProductIdAndNumberDto) {
@@ -30,8 +30,8 @@ export class CatalogComponent {
         this.itemsWithNumbers[productIndex].productsNumber = productIdAndNumberDto.productNumber;
     }
 
-    private getFakeItems(): Product[] {
-        return [
+    private setFakeItems(): void {
+        const products: Product[] = [
             new Product(0, 'картошка',10),
             new Product(1, 'огурец',20),
             new Product(2, 'колбаса',50),
@@ -43,5 +43,7 @@ export class CatalogComponent {
             new Product(8, 'свёкла',11),
             new Product(9, 'чеснок',10),
         ]
+
+        this.itemsWithNumbers = products.map((item) => new ProductAndNumberDto(item, Math.round(Math.random())));
     }
 }

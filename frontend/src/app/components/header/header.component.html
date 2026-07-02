@@ -7,7 +7,7 @@
             @if (loginService.isAdmin()) {
                 <li class="right"><a routerLink="/admin">Администрирование</a></li>
             }
-            <li class="right"><a (click)="loginService.logout()">Выход</a></li>
+            <li class="right"><a (click)="logout()">Выход</a></li>
         }
         @if (!loginService.isLoggedIn()) {
             <li class="right"><a routerLink="/registration">Регистрация</a></li>

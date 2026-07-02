@@ -1,1 +1,16 @@
-﻿cart
+﻿<div style="width:50%;">
+    @for (item of itemsWithNumbers; track item.product.id) {
+        <cart-item
+            [productId]="item.product.id"
+            [productName]="item.product.name"
+            [price]="item.product.price"
+            [productsNumber]="item.productsNumber"
+            (onNumberChange)="onProductNumberChange($event)"
+        ></cart-item>
+    } @empty {
+        Корзина пуста
+    }
+    <p class="right">
+        Итого: {{total}} р
+    </p>
+</div>

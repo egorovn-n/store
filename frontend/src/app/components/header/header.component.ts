@@ -17,9 +17,6 @@ export class HeaderComponent {
 
     public logout(): void {
         this.loginService.logout();
-        this.router.navigate(['/']).then(
-            () => console.log('logged out'),
-            (err) => console.log(err)
-        );
+        this.router.navigate(['/']).then();
     }
 }

@@ -25,7 +25,7 @@ export class LoginComponent {
             return;
         }
         if (this.loginService.login(this.email, this.password)) {
-            this.router.navigate(['/']);
+            this.router.navigate(['/']).then();
         } else {
             this.errorText = 'Неправильный email или пароль.';
         }
