@@ -3,14 +3,14 @@ import { Router, RouterLink } from '@angular/router';
 import { LoginService } from '../../services/login.service';
 
 @Component({
-    selector: 'header-component',
-    templateUrl: './header.component.html',
+    selector: 'navigation-component',
+    templateUrl: './navigation.component.html',
     imports: [
         RouterLink
     ],
-    styleUrls: ['./header.component.scss']
+    styleUrls: ['./navigation.component.scss']
 })
-export class HeaderComponent {
+export class NavigationComponent {
     constructor(public loginService: LoginService,
                 private router: Router) {
     }

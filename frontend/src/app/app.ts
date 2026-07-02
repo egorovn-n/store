@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { HeaderComponent } from './components/header/header.component';
-import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
+import { NavigationComponent } from './components/navigation/navigation.component';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import { LoginService } from './services/login.service';
 import { LoginApiService } from './services/apiservices/login.apiservice';
 
 @Component({
     selector: 'app-root',
     imports: [
-        HeaderComponent,
+        NavigationComponent,
         RouterOutlet,
         RouterModule
     ],
