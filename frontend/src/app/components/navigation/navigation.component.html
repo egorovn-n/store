@@ -5,7 +5,20 @@
         @if (loginService.isLoggedIn()) {
             <li><a routerLink="/history">История заказов</a></li>
             @if (loginService.isAdmin()) {
-                <li class="right"><a routerLink="/admin">Администрирование</a></li>
+                <li class="right">
+                    <details
+                        id="adminDetails"
+                        (mouseenter)="onAdminMouseEnter()"
+                        (mouseleave)="onAdminMouseLeave($event)"
+                        (click)="$event.preventDefault()">
+                        <summary>Администрирование</summary>
+                        <div class="absolute">
+                            <p><a routerLink="/admin">Добавить продукт</a></p>
+                            <p><a routerLink="/admin">Редактировать каталог</a></p>
+                            <p><a routerLink="/admin">Журнал событий</a></p>
+                        </div>
+                    </details>
+                </li>
             }
             <li class="right"><a (click)="logout()">Выход</a></li>
         }

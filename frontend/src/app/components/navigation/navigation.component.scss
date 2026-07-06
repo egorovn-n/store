@@ -7,3 +7,21 @@ ul > li {
     margin-right: 1rem;
 }
 
+/* Убираем стандартный маркер Chrome */
+details summary::-webkit-details-marker {
+    display: none
+}
+/* Убираем стандартный маркер Firefox */
+details > summary {
+    list-style: none;
+}
+
+.absolute {
+    position: absolute;
+    width: fit-content;
+    height: fit-content;
+    border: black solid 1px;
+    padding: 0 1rem 0 1rem;
+    background: #fff;
+    z-index: 100;
+}
