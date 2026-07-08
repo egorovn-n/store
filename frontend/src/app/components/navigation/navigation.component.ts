@@ -1,16 +1,22 @@
-﻿import {Component, ViewChild} from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { LoginService } from '../../services/login.service';
+import { NgOptimizedImage } from '@angular/common';
+import { environment } from '@environment/environment';
 
 @Component({
     selector: 'navigation-component',
     templateUrl: './navigation.component.html',
     imports: [
-        RouterLink
+        RouterLink,
+        NgOptimizedImage
     ],
     styleUrls: ['./navigation.component.scss']
 })
 export class NavigationComponent {
+    public appTitle: string = environment.appTitle;
+    public imgSrc: string = 'favicon.ico';
+
     constructor(public loginService: LoginService,
                 private router: Router) {
     }

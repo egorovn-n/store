@@ -1,9 +1,20 @@
 ﻿<nav>
     <ul>
-        <li><a routerLink="/">Каталог</a></li>
-        <li><a routerLink="/cart">Корзина</a></li>
+        <li>
+            <a routerLink="/">
+                <img [alt]="appTitle" [ngSrc]="imgSrc" width="24" height="24" />
+            </a>
+        </li>
+        <li>
+            <a routerLink="/">Каталог</a>
+        </li>
+        <li>
+            <a routerLink="/cart">Корзина</a>
+        </li>
         @if (loginService.isLoggedIn()) {
-            <li><a routerLink="/history">История заказов</a></li>
+            <li>
+                <a routerLink="/history">История заказов</a>
+            </li>
             @if (loginService.isAdmin()) {
                 <li class="right">
                     <details
@@ -20,11 +31,17 @@
                     </details>
                 </li>
             }
-            <li class="right"><a (click)="logout()">Выход</a></li>
+            <li class="right">
+                <a (click)="logout()">Выход</a>
+            </li>
         }
         @if (!loginService.isLoggedIn()) {
-            <li class="right"><a routerLink="/registration">Регистрация</a></li>
-            <li class="right"><a routerLink="/login">Вход</a></li>
+            <li class="right">
+                <a routerLink="/registration">Регистрация</a>
+            </li>
+            <li class="right">
+                <a routerLink="/login">Вход</a>
+            </li>
         }
     </ul>
 </nav>
