@@ -1,14 +1,22 @@
 ﻿<div style="border:black solid 1px;">
-    <div>
-        <p>{{ productName }}</p>
-        <img class="product-card-img" [alt]="productName" [ngSrc]="imgSrc" width="100" height="100" />
-    </div>
-    <div>
-        <span>{{ price }} р. </span>
-        <span> x </span>
-        <a (click)="numberDecrement()">-</a>
-        <span>{{productsNumber}}</span>
-        <a (click)="numberIncrement()">+</a>
-        <span> = {{sum}} р</span>
-    </div>
+    @if (!productAndNumberDto) {
+        <span>Проблема с загрузкой товара</span>
+    } @else {
+        <div>
+            <p>{{ productAndNumberDto.product.name }}</p>
+            <img class="product-card-img"
+                 [alt]="productAndNumberDto.product.name"
+                 [ngSrc]="productAndNumberDto.product.imgSrc"
+                 width="100"
+                 height="100" />
+        </div>
+        <div>
+            <span>{{ productAndNumberDto.product.price }} р. </span>
+            <span> x </span>
+            <a (click)="numberDecrement()">-</a>
+            <span>{{productAndNumberDto.productsNumber}}</span>
+            <a (click)="numberIncrement()">+</a>
+            <span> = {{sum}} р</span>
+        </div>
+    }
 </div>

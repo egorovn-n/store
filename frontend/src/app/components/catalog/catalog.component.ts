@@ -1,9 +1,9 @@
 ﻿import { Component } from '@angular/core';
-import { Product } from '../../models/product.model';
 import { ProductComponent } from './product.component';
 import { ProductFiltersComponent } from './product-filters.component';
 import { ProductAndNumberDto } from '../../dtos/product-and-number.dto';
 import { ProductIdAndNumberDto } from '../../dtos/product-id-and-number.dto';
+import { ProductWithImgSrc } from '../../dtos/product-with-img-src.dto';
 
 @Component({
     selector: 'catalog-component',
@@ -14,7 +14,7 @@ import { ProductIdAndNumberDto } from '../../dtos/product-id-and-number.dto';
     ]
 })
 export class CatalogComponent {
-    public itemsWithNumbers: ProductAndNumberDto[] = [];
+    public itemsWithNumbers: ProductAndNumberDto<ProductWithImgSrc>[] = [];
 
     constructor() {
         this.setFakeItems();
@@ -31,17 +31,17 @@ export class CatalogComponent {
     }
 
     private setFakeItems(): void {
-        const products: Product[] = [
-            new Product(0, 'картошка',10),
-            new Product(1, 'огурец',20),
-            new Product(2, 'колбаса',50),
-            new Product(3, 'квас',15),
-            new Product(4, 'яйца',20),
-            new Product(5, 'майонез',10),
-            new Product(6, 'морковь',8),
-            new Product(7, 'лук',7),
-            new Product(8, 'свёкла',11),
-            new Product(9, 'чеснок',10),
+        const products: ProductWithImgSrc[] = [
+            new ProductWithImgSrc(0, 'картошка',10, 'favicon.ico'),
+            new ProductWithImgSrc(1, 'огурец',20, 'favicon.ico'),
+            new ProductWithImgSrc(2, 'колбаса',50, 'favicon.ico'),
+            new ProductWithImgSrc(3, 'квас',15, 'favicon.ico'),
+            new ProductWithImgSrc(4, 'яйца',20, 'favicon.ico'),
+            new ProductWithImgSrc(5, 'майонез',10, 'favicon.ico'),
+            new ProductWithImgSrc(6, 'морковь',8, 'favicon.ico'),
+            new ProductWithImgSrc(7, 'лук',7, 'favicon.ico'),
+            new ProductWithImgSrc(8, 'свёкла',11, 'favicon.ico'),
+            new ProductWithImgSrc(9, 'чеснок',10, 'favicon.ico'),
         ]
 
         this.itemsWithNumbers = products.map((item) => new ProductAndNumberDto(item, Math.round(Math.random())));

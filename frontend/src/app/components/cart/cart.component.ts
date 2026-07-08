@@ -1,8 +1,8 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { ProductAndNumberDto } from '../../dtos/product-and-number.dto';
-import { Product } from '../../models/product.model';
 import { ProductIdAndNumberDto } from '../../dtos/product-id-and-number.dto';
 import { CartItemComponent } from './cart-item.component';
+import { ProductWithImgSrc } from '../../dtos/product-with-img-src.dto';
 
 @Component({
     selector: 'cart-component',
@@ -12,7 +12,7 @@ import { CartItemComponent } from './cart-item.component';
     templateUrl: './cart.component.html'
 })
 export class CartComponent implements OnInit {
-    public itemsWithNumbers: ProductAndNumberDto[] = [];
+    public itemsWithNumbers: ProductAndNumberDto<ProductWithImgSrc>[] = [];
     public total = 0;
 
     constructor() {
@@ -45,9 +45,9 @@ export class CartComponent implements OnInit {
 
     private setFakeItems() {
         this.itemsWithNumbers = [
-            new ProductAndNumberDto(new Product(0, 'картошка',10), 1),
-            new ProductAndNumberDto(new Product(1, 'огурец',20), 2),
-            new ProductAndNumberDto(new Product(2, 'колбаса',50), 3)
+            new ProductAndNumberDto(new ProductWithImgSrc(0, 'картошка',10, 'favicon.ico'), 1),
+            new ProductAndNumberDto(new ProductWithImgSrc(1, 'огурец',20, 'favicon.ico'), 2),
+            new ProductAndNumberDto(new ProductWithImgSrc(2, 'колбаса',50, 'favicon.ico'), 3)
         ]
     }
 }

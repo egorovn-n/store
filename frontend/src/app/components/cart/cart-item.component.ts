@@ -1,6 +1,10 @@
-﻿import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
+﻿import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ProductIdAndNumberDto } from '../../dtos/product-id-and-number.dto';
 import { NgOptimizedImage } from '@angular/common';
+import { ProductWithChangeableNumberBaseComponent } from '../common/product-with-changeable-number-base.component';
+import { ProductAndNumberDto } from '../../dtos/product-and-number.dto';
+import { ProductWithImgSrc } from '../../dtos/product-with-img-src.dto';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'cart-item',
@@ -9,32 +13,26 @@ import { NgOptimizedImage } from '@angular/common';
         NgOptimizedImage
     ]
 })
-export class CartItemComponent implements OnChanges {
-    @Input() productId: number = -1;
-    @Input() productName: string = 'Пусто';
-    @Input() price: number = NaN;
-    @Input() imgSrc: string = 'favicon.ico';
-    @Input() productsNumber: number = 0;
-    @Output() onNumberChange = new EventEmitter<ProductIdAndNumberDto>();
+export class CartItemComponent extends ProductWithChangeableNumberBaseComponent implements OnInit {
+    @Input() override productAndNumberDto: ProductAndNumberDto<ProductWithImgSrc> | null = null;
+    @Output() override onNumberChange = new EventEmitter<ProductIdAndNumberDto>();
     public sum: number = 0;
 
-    ngOnChanges() {
-        this.sum = this.price * this.productsNumber;
+    constructor() {
+        super(true);
+        this.onNumberChange.pipe(takeUntilDestroyed()).subscribe((value: ProductIdAndNumberDto) => {
+            if (!value || !this.productAndNumberDto) {
+                return;
+            }
+            this.sum = this.productAndNumberDto.product.price * value.productNumber;
+        })
     }
 
-    public numberIncrement() {
-        this.productNumberChange(1);
-    }
-
-    public numberDecrement() {
-        this.productNumberChange(-1);
-    }
-
-    private productNumberChange(numberChange: number): void {
-        let finalNumber = this.productsNumber + numberChange;
-        if (finalNumber < 0) {
-            finalNumber = 0;
+    ngOnInit() {
+        if (!this.productAndNumberDto) {
+            return;
         }
-        this.onNumberChange.emit(new ProductIdAndNumberDto(this.productId, finalNumber));
+
+        this.sum = this.productAndNumberDto.product.price * this.productAndNumberDto.productsNumber;
     }
 }

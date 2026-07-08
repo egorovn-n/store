@@ -4,10 +4,7 @@
 <div style="width: 65%; display: inline-block;">
     @for (item of itemsWithNumbers; track item.product.id) {
         <product
-            [productId]="item.product.id"
-            [productName]="item.product.name"
-            [price]="item.product.price"
-            [productsNumber]="item.productsNumber"
+            [productAndNumberDto]="item"
             (onNumberChange)="onProductNumberChange($event)"
         ></product>
     } @empty {
