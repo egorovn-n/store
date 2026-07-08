@@ -30,6 +30,10 @@ export class CatalogComponent {
         this.itemsWithNumbers[productIndex].productsNumber = productIdAndNumberDto.productNumber;
     }
 
+    public applyFilters() {
+        //TODO апи запрос на каталог
+    }
+
     private setFakeItems(): void {
         const products: ProductWithImgSrc[] = [
             new ProductWithImgSrc(0, 'картошка',10, 'favicon.ico'),

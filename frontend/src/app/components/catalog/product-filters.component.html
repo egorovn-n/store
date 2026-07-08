@@ -1,16 +1,19 @@
 ﻿<p>Фильтры</p>
 <div>
     <p>Название<p>
-    <input type="text">
+    <input type="text" [(ngModel)]="productName">
 </div>
 <div>
     <p>Цена</p>
     <span>От</span>
-    <input type="number">
+    <input type="number" [(ngModel)]="priceFrom">
     <span>До</span>
-    <input type="number">
+    <input type="number" [(ngModel)]="priceTo">
 </div>
 <div>
-    <div>Показывать только товары в наличии</div>
-    <input type="checkbox">
+    <span>Показывать только товары в наличии</span>
+    <input type="checkbox" [(ngModel)]="onlyInStock">
 </div>
+<button (click)="applyFilters()">Применить</button>
+<br>
+<button (click)="resetFilters()">Сбросить фильтры</button>
