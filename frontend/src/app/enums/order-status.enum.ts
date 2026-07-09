@@ -3,6 +3,9 @@ export enum OrderStatusEnum {
     /** Не оплачено */
     NotPaid,
 
+    /** Ожидание оплаты */
+    WaitingForPayment,
+
     /** Заказ принят */
     Accepted,
 

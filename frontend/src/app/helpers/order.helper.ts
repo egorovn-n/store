@@ -20,7 +20,6 @@ export abstract class OrderHelper {
     /** Получить статус, изображенный квадратами */
     public static getVisualStatus(status: OrderStatusEnum): string {
         switch (status) {
-            case OrderStatusEnum.NotPaid:
             case OrderStatusEnum.Accepted: {
                 return '□□□';
             }
@@ -65,6 +64,9 @@ export abstract class OrderHelper {
         switch (status) {
             case OrderStatusEnum.NotPaid: {
                 return 'Не оплачен';
+            }
+            case OrderStatusEnum.WaitingForPayment: {
+                return 'Ожидание оплаты';
             }
             case OrderStatusEnum.Accepted: {
                 return 'Заказ принят';
