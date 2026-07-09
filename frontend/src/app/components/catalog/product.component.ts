@@ -15,9 +15,10 @@ import { ProductWithChangeableNumberBaseComponent } from '../common/product-with
 })
 export class ProductComponent extends ProductWithChangeableNumberBaseComponent {
     @Input() override productAndNumberDto: ProductAndNumberDto<ProductWithImgSrc> | null = null;
+    @Input() override canChangeNumber: boolean = true;
     @Output() override onNumberChange = new EventEmitter<ProductIdAndNumberDto>();
 
     constructor() {
-        super(true);
+        super();
     }
 }

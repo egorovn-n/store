@@ -13,7 +13,7 @@ import { ProductWithImgSrc } from '../../dtos/product-with-img-src.dto';
     ],
     templateUrl: './order-list.component.html'
 })
-export class OrderComponent {
+export class OrderListComponent {
     public orders: OrderModel[] = [];
 
     constructor() {

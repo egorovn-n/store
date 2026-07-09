@@ -1,0 +1,12 @@
+﻿@if (!order) {
+    <p>Ошибка загрузки заказа.</p>
+} @else {
+    <h1>Заказ от {{ order.orderDateTime | date: DateConstants.AppDateTime }}</h1>
+    <p>{{ OrderHelper.translateOrderType(order.orderType) }}</p>
+    <p>Статус заказа: {{ OrderHelper.translateOrderStatus(order.orderStatus, order.orderType) }} {{OrderHelper.getVisualStatus(order.orderStatus)}}</p>
+    @for (productAndNumber of order.products; track productAndNumber.product.id) {
+        <cart-item [canChangeNumber]="false"
+                   [productAndNumberDto]="productAndNumber"></cart-item>
+    }
+    <p>Итого: {{ order.total }} р.</p>
+}

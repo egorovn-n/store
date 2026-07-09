@@ -31,10 +31,10 @@ export abstract class OrderHelper {
                 return '■■□';
             }
             case OrderStatusEnum.Completed: {
-                return '■■■';
+                return '✓';
             }
             case OrderStatusEnum.Canceled: {
-                return 'x';
+                return '✘';
             }
             default: {
                 return '';
@@ -90,7 +90,7 @@ export abstract class OrderHelper {
     /** Перевести статус самовывоза */
     private static translatePickupStatus(status: OrderStatusEnum): string {
         if (status === OrderStatusEnum.OnTheWay) {
-            return 'Готово к выдаче';
+            return 'Можно забирать';
         }
 
         return OrderHelper.translateDeliveryStatus(status);

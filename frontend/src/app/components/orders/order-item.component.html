@@ -2,8 +2,8 @@
     @if (!order) {
         <p>Проблема с отображением заказа</p>
     } @else {
-        <a routerLink="order/{{order.id}}">
-            <p><strong>Заказ от {{ order.orderDateTime | date:'dd.MM.yyyy HH:mm' }}</strong></p>
+        <a routerLink="/order/{{order.id}}">
+            <p><strong>Заказ от {{ order.orderDateTime | date: DateConstants.AppDateTime }}</strong></p>
         </a>
         @for (productAndNumberDto of order.products; track productAndNumberDto.product.id) {
             <div style="display: inline-block;">
@@ -16,8 +16,7 @@
             </div>
         }
         <p>{{ OrderHelper.translateOrderType(order.orderType) }}</p>
-        <p>{{ OrderHelper.translateOrderStatus(order.orderStatus, order.orderType) }}</p>
-        <p>{{ OrderHelper.getVisualStatus(order.orderStatus) }}</p>
+        <p>{{ OrderHelper.translateOrderStatus(order.orderStatus, order.orderType) }} {{ OrderHelper.getVisualStatus(order.orderStatus) }}</p>
         <p>Итого: {{ order.total }} р.</p>
     }
 </div>

@@ -15,11 +15,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class CartItemComponent extends ProductWithChangeableNumberBaseComponent implements OnInit {
     @Input() override productAndNumberDto: ProductAndNumberDto<ProductWithImgSrc> | null = null;
+    @Input() override canChangeNumber: boolean = true;
     @Output() override onNumberChange = new EventEmitter<ProductIdAndNumberDto>();
     public sum: number = 0;
 
     constructor() {
-        super(true);
+        super();
         this.onNumberChange.pipe(takeUntilDestroyed()).subscribe((value: ProductIdAndNumberDto) => {
             if (!value || !this.productAndNumberDto) {
                 return;

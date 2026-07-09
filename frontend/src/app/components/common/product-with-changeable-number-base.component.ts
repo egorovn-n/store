@@ -6,11 +6,7 @@ import { ProductWithImgSrc } from '../../dtos/product-with-img-src.dto';
 export abstract class ProductWithChangeableNumberBaseComponent {
     public productAndNumberDto: ProductAndNumberDto<ProductWithImgSrc> | null = null;
     protected onNumberChange = new EventEmitter<ProductIdAndNumberDto>();
-    private canChangeNumber: boolean = false;
-
-    constructor(canChangeNumber: boolean = false) {
-        this.canChangeNumber = canChangeNumber;
-    }
+    protected canChangeNumber: boolean = false;
 
     public numberIncrement() {
         this.productNumberChange(1);

@@ -3,7 +3,7 @@
 </div>
 <div style="width: 65%; display: inline-block;">
     @for (item of itemsWithNumbers; track item.product.id) {
-        <product
+        <product [canChangeNumber]="true"
             [productAndNumberDto]="item"
             (onNumberChange)="onProductNumberChange($event)"
         ></product>
