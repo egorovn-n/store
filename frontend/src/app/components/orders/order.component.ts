@@ -20,13 +20,13 @@ import { CartItemComponent } from '../cart/cart-item.component';
     templateUrl: './order.component.html'
 })
 export class OrderComponent {
-    public order: OrderModel = new OrderModel();
+    public order: OrderModel | null = null;
     protected readonly DateConstants = DateConstants;
     protected readonly OrderHelper = OrderHelper;
 
     constructor(route: ActivatedRoute,
                 ordersApiService: OrdersApiService) {
-        let orderId: number = route.snapshot.params['id'];
+        let orderId: number = Number(route.snapshot.params['id']);
         ordersApiService.getOrderById(orderId).pipe(take(1)).subscribe(order => {
             this.order = order;
         })

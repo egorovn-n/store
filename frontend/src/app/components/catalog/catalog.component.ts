@@ -1,9 +1,14 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { ProductComponent } from './product.component';
 import { ProductFiltersComponent } from './product-filters.component';
 import { ProductAndNumberDto } from '../../dtos/product-and-number.dto';
 import { ProductIdAndNumberDto } from '../../dtos/product-id-and-number.dto';
 import { ProductWithImgSrc } from '../../dtos/product-with-img-src.dto';
+import { ProductsApiService } from '../../services/apiservices/products.apiservice';
+import { take } from 'rxjs';
+import { FilterModel } from '../../models/filter.model';
+import { ActivatedRoute, Params } from '@angular/router';
+import { FilterHelper } from '../../helpers/filter.helper';
 
 @Component({
     selector: 'catalog-component',
@@ -11,13 +16,26 @@ import { ProductWithImgSrc } from '../../dtos/product-with-img-src.dto';
     imports: [
         ProductComponent,
         ProductFiltersComponent
+    ],
+    providers: [
+        ProductsApiService
     ]
 })
-export class CatalogComponent {
+export class CatalogComponent implements OnInit {
     public itemsWithNumbers: ProductAndNumberDto<ProductWithImgSrc>[] = [];
+    public filter: FilterModel = new FilterModel();
 
-    constructor() {
-        this.setFakeItems();
+    constructor(private productsApiService: ProductsApiService,
+                activatedRoute: ActivatedRoute) {
+        activatedRoute.queryParams.pipe(take(1)).subscribe((params: Params) => {
+            FilterHelper.fillFilterFromParams(this.filter, params);
+        });
+    }
+
+    public ngOnInit() {
+        this.productsApiService.getProducts(this.filter).pipe(take(1)).subscribe(products => {
+            this.itemsWithNumbers = products;
+        });
     }
 
     public onProductNumberChange(productIdAndNumberDto: ProductIdAndNumberDto) {
@@ -28,26 +46,5 @@ export class CatalogComponent {
             return;
         }
         this.itemsWithNumbers[productIndex].productsNumber = productIdAndNumberDto.productNumber;
-    }
-
-    public applyFilters() {
-        //TODO апи запрос на каталог
-    }
-
-    private setFakeItems(): void {
-        const products: ProductWithImgSrc[] = [
-            new ProductWithImgSrc(0, 'картошка',10, 'favicon.ico'),
-            new ProductWithImgSrc(1, 'огурец',20, 'favicon.ico'),
-            new ProductWithImgSrc(2, 'колбаса',50, 'favicon.ico'),
-            new ProductWithImgSrc(3, 'квас',15, 'favicon.ico'),
-            new ProductWithImgSrc(4, 'яйца',20, 'favicon.ico'),
-            new ProductWithImgSrc(5, 'майонез',10, 'favicon.ico'),
-            new ProductWithImgSrc(6, 'морковь',8, 'favicon.ico'),
-            new ProductWithImgSrc(7, 'лук',7, 'favicon.ico'),
-            new ProductWithImgSrc(8, 'свёкла',11, 'favicon.ico'),
-            new ProductWithImgSrc(9, 'чеснок',10, 'favicon.ico'),
-        ]
-
-        this.itemsWithNumbers = products.map((item) => new ProductAndNumberDto(item, Math.round(Math.random())));
     }
 }

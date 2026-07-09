@@ -1,5 +1,5 @@
 ﻿<div style="width: 30%; display: inline-block; border: black solid 1px;">
-    <product-filters (onFilterChange)="applyFilters()"></product-filters>
+    <product-filters [filter]="filter"></product-filters>
 </div>
 <div style="width: 65%; display: inline-block;">
     @for (item of itemsWithNumbers; track item.product.id) {

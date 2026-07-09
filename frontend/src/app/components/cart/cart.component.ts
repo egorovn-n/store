@@ -3,11 +3,16 @@ import { ProductAndNumberDto } from '../../dtos/product-and-number.dto';
 import { ProductIdAndNumberDto } from '../../dtos/product-id-and-number.dto';
 import { CartItemComponent } from './cart-item.component';
 import { ProductWithImgSrc } from '../../dtos/product-with-img-src.dto';
+import { CartApiService } from '../../services/apiservices/cart.apiservice';
+import { take } from 'rxjs';
 
 @Component({
     selector: 'cart-component',
     imports: [
         CartItemComponent
+    ],
+    providers: [
+        CartApiService
     ],
     templateUrl: './cart.component.html'
 })
@@ -15,8 +20,10 @@ export class CartComponent implements OnInit {
     public itemsWithNumbers: ProductAndNumberDto<ProductWithImgSrc>[] = [];
     public total = 0;
 
-    constructor() {
-        this.setFakeItems();
+    constructor(cartApiService: CartApiService) {
+        cartApiService.getCartItems().pipe(take(1)).subscribe(items => {
+            this.itemsWithNumbers = items;
+        })
     }
 
     ngOnInit() {
@@ -41,13 +48,5 @@ export class CartComponent implements OnInit {
         this.total = this.itemsWithNumbers
             .map(item => item.productsNumber * item.product.price)
             .reduce((acc, sum) => acc + sum, 0)
-    }
-
-    private setFakeItems() {
-        this.itemsWithNumbers = [
-            new ProductAndNumberDto(new ProductWithImgSrc(0, 'картошка',10, 'favicon.ico'), 1),
-            new ProductAndNumberDto(new ProductWithImgSrc(1, 'огурец',20, 'favicon.ico'), 2),
-            new ProductAndNumberDto(new ProductWithImgSrc(2, 'колбаса',50, 'favicon.ico'), 3)
-        ]
     }
 }
