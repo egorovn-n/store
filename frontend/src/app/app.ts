@@ -11,7 +11,10 @@ import { LoginApiService } from './services/apiservices/login.apiservice';
         RouterOutlet,
         RouterModule
     ],
-    providers: [LoginApiService, LoginService],
+    providers: [
+        LoginApiService,
+        LoginService
+    ],
     templateUrl: './app.html'
 })
 export class App {

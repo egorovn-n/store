@@ -26,9 +26,27 @@ export class ProductsApiService {
 
     public getProducts(filter: FilterModel): Observable<ProductAndNumberDto<ProductWithImgSrc>[]> {
         return new Observable(subscriber => {
-            subscriber.next(this.fakeProducts);
+            const shuffled = this.shuffleArray(this.fakeProducts);
+            subscriber.next(shuffled);
             subscriber.complete();
-        })
+        });
         //return this.httpClient.post(environment.apiUrl + '/api/Products/GetItems', filters) as Observable<ProductAndNumberDto<ProductWithImgSrc>[]>;
+    }
+
+    /**
+     * Перетасовывает массив используя алгоритм Фишера-Йетса
+     * @param array Исходный массив
+     * @returns Новый перетасованный массив
+     */
+    private shuffleArray<T>(array: T[]): T[] {
+        // TODO для отладки
+        const shuffled = [...array]; // Создаем копию, чтобы не мутировать исходный массив
+
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+
+        return shuffled;
     }
 }

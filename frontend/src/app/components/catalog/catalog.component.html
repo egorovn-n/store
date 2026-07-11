@@ -1,13 +1,15 @@
-﻿<div style="width: 30%; display: inline-block; border: black solid 1px;">
-    <product-filters [filter]="filter"></product-filters>
-</div>
-<div style="width: 65%; display: inline-block;">
-    @for (item of itemsWithNumbers; track item.product.id) {
-        <product [canChangeNumber]="true"
-            [productAndNumberDto]="item"
-            (onNumberChange)="onProductNumberChange($event)"
-        ></product>
-    } @empty {
-        Каталог пуст
-    }
+﻿<div #catalog>
+    <div style="width: 30%; display: inline-block; border: black solid 1px;">
+        <product-filters (onFilterChange)="loadProductsFromServer($event)"></product-filters>
+    </div>
+    <div style="width: 65%; display: inline-block;">
+        @for (item of itemsWithNumbers; track item.product.id) {
+            <product [canChangeNumber]="!(loadingService.isLoading$ | async)"
+                [productAndNumberDto]="item"
+                (onNumberChange)="onProductNumberChange($event)"
+            ></product>
+        } @empty {
+            Каталог пуст
+        }
+    </div>
 </div>
