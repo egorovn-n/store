@@ -71,7 +71,6 @@ export class CatalogComponent implements AfterViewInit {
 
     /** Загрузить продукты с сервера учитывая фильтры */
     protected loadProductsFromServer(filter: FilterModel): void {
-        console.log('filter')
         if (this.loadingService.getIsLoadingValue()) {
             return;
         }

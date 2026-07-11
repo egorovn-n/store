@@ -21,14 +21,12 @@ export class ProductFiltersComponent {
                 private router: Router,
                 private activatedRoute: ActivatedRoute) {
         this.activatedRoute.queryParams.pipe(takeUntilDestroyed()).subscribe(queryParams => {
-            console.log('hello from constructor');
             FilterHelper.fillFilterFromParams(this.filter, queryParams);
             this.onFilterChange.emit(this.filter);
         });
     }
 
     public initFilters() {
-        console.log('hello from init');
         this.onFilterChange.emit(this.filter);
     }
 
