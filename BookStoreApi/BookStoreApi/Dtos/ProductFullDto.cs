@@ -1,27 +1,27 @@
 ﻿namespace BookStoreApi.Dtos;
 
 /// <summary>
-/// Dto товара со всей информацией
+/// Dto товара со всей информацией.
 /// </summary>
 public class ProductFullDto
 {
     /// <summary>
-    /// Идентификатор
+    /// Идентификатор.
     /// </summary>
     public int Id { get; set; }
 
     /// <summary>
-    /// Наименование
+    /// Наименование.
     /// </summary>
     public string Name { get; set; }
 
     /// <summary>
-    /// Ссылки на картинки товара
+    /// Гуиды картинок товара.
     /// </summary>
-    public IEnumerable<string> ImageUrls { get; set; }
+    public IEnumerable<Guid> ImageGuids { get; set; }
 
     /// <summary>
-    /// Цена
+    /// Цена.
     /// </summary>
     public double Price { get; set; }
 }

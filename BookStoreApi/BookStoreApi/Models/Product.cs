@@ -26,9 +26,9 @@ public class Product
     public bool Archived { get; set; }
 
     /// <summary>
-    /// Связь товара и корзины (заказа).
+    /// Связь товара и заказа корзины.
     /// </summary>
-    public IEnumerable<OrderProduct> CartProducts { get; set; }
+    public IEnumerable<OrderProduct> OrderProducts { get; set; }
 
     /// <summary>
     /// Ссылки на картинки товара.

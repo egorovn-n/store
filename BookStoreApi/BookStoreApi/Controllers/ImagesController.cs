@@ -20,15 +20,15 @@ public class ImagesController: AppControllerBase
     }
 
     /// <summary>
-    /// Получить изображение.
+    /// Получить изображение по идентификаторам товаров.
     /// </summary>
-    /// <param name="imageGuids">Гуиды картинок.</param>
+    /// <param name="productIds">Идентификаторы товаров.</param>
     /// <returns>Пары гуид-картинка.</returns>
     /// <response code="200">Картинки получены.</response>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public IEnumerable<ImageDto> GetImages(IEnumerable<Guid> imageGuids)
+    public async Task<IEnumerable<FileDto>> GetImagesByProductIds(IEnumerable<int> productIds)
     {
-        return _imagesService.GetImages(imageGuids);
+        return await _imagesService.GetImagesByProductIdsAsync(productIds);
     }
 }

@@ -4,6 +4,7 @@ using BookStoreApi.Dtos;
 using BookStoreApi.Exceptions.Login;
 using BookStoreApi.Interfaces;
 using BookStoreApi.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BookStoreApi.Services;
@@ -91,7 +92,7 @@ public class LoginService: ILoginService
     /// <returns>True, если существует</returns>
     private bool CheckUserExists(string username)
     {
-        return _dbContext.Users.Any(u => u.Name == username);
+        return _dbContext.Users.AsNoTracking().Any(u => u.Name == username);
     }
 
     /// <summary>
@@ -102,6 +103,6 @@ public class LoginService: ILoginService
     /// <returns>True, если пароль подходит к имени пользователя</returns>
     private bool CheckPassword(string username, string password)
     {
-        return _dbContext.Users.Any(u => u.Name == username && u.Password == password);
+        return _dbContext.Users.AsNoTracking().Any(u => u.Name == username && u.Password == password);
     }
 }

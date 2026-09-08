@@ -8,9 +8,9 @@ namespace BookStoreApi.Interfaces;
 public interface IImagesService
 {
     /// <summary>
-    /// Получить изображение.
+    /// Получить изображение по идентификаторам товаров.
     /// </summary>
-    /// <param name="imageGuids">Гуиды картинок.</param>
+    /// <param name="productIds">Идентификаторы товаров.</param>
     /// <returns>Пары гуид-картинка.</returns>
-    public IEnumerable<ImageDto> GetImages(IEnumerable<Guid> imageGuids);
+    public Task<IEnumerable<FileDto>> GetImagesByProductIdsAsync(IEnumerable<int> productIds);
 }
