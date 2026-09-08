@@ -22,6 +22,205 @@
     }
   ],
   "paths": {
+    "/api/Cart/AddProduct": {
+      "post": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": "Добавить товар в корзину.",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "query",
+            "description": "Идентификатор товара.",
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": [
+                "integer",
+                "string"
+              ],
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Товар добавлен в корзину."
+          },
+          "400": {
+            "description": "Продукт не найден в БД.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Cart/GetCartItems": {
+      "get": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": "Получить все товары в корзине.",
+        "responses": {
+          "200": {
+            "description": "Товары получены.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductFullDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductFullDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductFullDto"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Images/GetImages": {
+      "get": {
+        "tags": [
+          "Images"
+        ],
+        "summary": "Получить изображение.",
+        "requestBody": {
+          "description": "Гуиды картинок.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Картинки получены.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImageDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImageDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImageDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Login/Login": {
       "post": {
         "tags": [
@@ -155,7 +354,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/Order"
                   }
                 }
               },
@@ -163,7 +362,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/Order"
                   }
                 }
               },
@@ -171,7 +370,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/Order"
                   }
                 }
               }
@@ -199,10 +398,248 @@
           }
         }
       }
+    },
+    "/api/Orders/GetOrderById": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Получение заказов.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": [
+                "integer",
+                "string"
+              ],
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список заказов получен.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Products/GetProducts": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Получить товары по фильтру.",
+        "requestBody": {
+          "description": "Фильтр.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "#/components/schemas/FilterDto"
+                  }
+                ]
+              }
+            },
+            "text/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "#/components/schemas/FilterDto"
+                  }
+                ]
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "#/components/schemas/FilterDto"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Товары получены.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductFullDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductFullDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductFullDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "Cart": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "description": "Идентификатор.",
+            "format": "int32"
+          },
+          "userId": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "description": "Идентификатор владельца корзины.",
+            "format": "int32"
+          },
+          "discriminator": {
+            "type": "string",
+            "description": "Дискриминатор для различия Cart и Order. Только для чтения."
+          },
+          "orderProducts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderProduct"
+            },
+            "description": "Связь корзины с товаром."
+          },
+          "user": {
+            "description": "Владелец корзины.",
+            "$ref": "#/components/schemas/User"
+          }
+        },
+        "description": "Корзина товаров."
+      },
+      "FilterDto": {
+        "type": "object",
+        "properties": {
+          "productName": {
+            "type": "string",
+            "description": "Наименование товара"
+          },
+          "priceFrom": {
+            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?$",
+            "type": [
+              "number",
+              "string"
+            ],
+            "description": "Цена от",
+            "format": "double"
+          },
+          "priceTo": {
+            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?$",
+            "type": [
+              "number",
+              "string"
+            ],
+            "description": "Цена до",
+            "format": "double"
+          },
+          "onlyInStock": {
+            "type": "boolean",
+            "description": "Получать только товары в наличии"
+          }
+        },
+        "description": "Dto фильтра"
+      },
+      "ImageDto": {
+        "type": "object",
+        "properties": {
+          "imageGuid": {
+            "type": "string",
+            "description": "Гуид картинки",
+            "format": "uuid"
+          },
+          "imageBytes": {
+            "type": "array",
+            "items": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": [
+                "integer",
+                "string"
+              ],
+              "format": "uint8"
+            },
+            "description": "Байты картинки"
+          }
+        },
+        "description": "Dto картинки"
+      },
       "LoginResponseDto": {
         "type": "object",
         "properties": {
@@ -216,6 +653,107 @@
           }
         },
         "description": "Dto для ответа на вход в профиль."
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "orderStatus": {
+            "description": "Статус заказа.",
+            "$ref": "#/components/schemas/OrderStatusEnum"
+          },
+          "orderType": {
+            "description": "Тип заказа.",
+            "$ref": "#/components/schemas/OrderTypeEnum"
+          },
+          "orderDateTime": {
+            "type": "string",
+            "description": "Дата и время заказа.",
+            "format": "date-time"
+          },
+          "id": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "description": "Идентификатор.",
+            "format": "int32"
+          },
+          "userId": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "description": "Идентификатор владельца корзины.",
+            "format": "int32"
+          },
+          "discriminator": {
+            "type": "string",
+            "description": "Дискриминатор для различия Cart и Order. Только для чтения."
+          },
+          "orderProducts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderProduct"
+            },
+            "description": "Связь корзины с товаром."
+          },
+          "user": {
+            "description": "Владелец корзины.",
+            "$ref": "#/components/schemas/User"
+          }
+        },
+        "description": "Заказ."
+      },
+      "OrderProduct": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "description": "Идентификатор корзины.",
+            "format": "int32"
+          },
+          "productId": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "description": "Идентификатор товара.",
+            "format": "int32"
+          },
+          "productsNumber": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "description": "Количество товаров этого типа.",
+            "format": "int32"
+          },
+          "order": {
+            "description": "Корзина (или заказ).",
+            "$ref": "#/components/schemas/Cart"
+          },
+          "product": {
+            "description": "Товар.",
+            "$ref": "#/components/schemas/Product"
+          }
+        },
+        "description": "Таблица для связи \"Корзины - Товары\". Или \"Заказы - Товары\",\r\nт.к. используется подход TPH для наследования \"заказов\" от \"корзины\"."
+      },
+      "OrderStatusEnum": {
+        "type": "integer",
+        "description": "Статус заказа"
+      },
+      "OrderTypeEnum": {
+        "type": "integer",
+        "description": "Тип заказа"
       },
       "ProblemDetails": {
         "type": "object",
@@ -254,6 +792,233 @@
             ]
           }
         }
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "description": "Идентификатор.",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "Наименование."
+          },
+          "numberInStock": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "description": "Количество товаров в наличии.",
+            "format": "int32"
+          },
+          "archived": {
+            "type": "boolean",
+            "description": "Был ли архивирован товар."
+          },
+          "cartProducts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderProduct"
+            },
+            "description": "Связь товара и корзины (заказа)."
+          },
+          "productImages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductImage"
+            },
+            "description": "Ссылки на картинки товара."
+          },
+          "productPriceChanges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductPriceChange"
+            },
+            "description": "Изменения цен для товара."
+          }
+        },
+        "description": "Товар."
+      },
+      "ProductFullDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "description": "Идентификатор",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "Наименование"
+          },
+          "imageUrls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Ссылки на картинки товара"
+          },
+          "price": {
+            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?$",
+            "type": [
+              "number",
+              "string"
+            ],
+            "description": "Цена",
+            "format": "double"
+          }
+        },
+        "description": "Dto товара со всей информацией"
+      },
+      "ProductImage": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "description": "Идентификатор.",
+            "format": "int32"
+          },
+          "guid": {
+            "type": "string",
+            "description": "Гуид картинки.",
+            "format": "uuid"
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Product"
+            },
+            "description": "Товары."
+          }
+        },
+        "description": "Картинка товара."
+      },
+      "ProductPriceChange": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "description": "Идентификатор.",
+            "format": "int32"
+          },
+          "productId": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "description": "Идентификатор товара.",
+            "format": "int32"
+          },
+          "price": {
+            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?$",
+            "type": [
+              "number",
+              "string"
+            ],
+            "description": "Цена.",
+            "format": "double"
+          },
+          "changeDateTime": {
+            "type": "string",
+            "description": "Дата и время изменения.",
+            "format": "date-time"
+          },
+          "product": {
+            "description": "Товар.",
+            "$ref": "#/components/schemas/Product"
+          }
+        },
+        "description": "Изменение цены товара."
+      },
+      "Role": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "description": "Идентификатор.",
+            "format": "int32"
+          },
+          "roleName": {
+            "description": "Наименование роли.",
+            "$ref": "#/components/schemas/RoleEnum"
+          }
+        },
+        "description": "Роль пользователя."
+      },
+      "RoleEnum": {
+        "type": "integer",
+        "description": "Перечисление ролей пользователей"
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "description": "Идентификатор.",
+            "format": "int32"
+          },
+          "roleId": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "description": "Идентификатор роли.",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "Имя пользователя."
+          },
+          "password": {
+            "type": "string",
+            "description": "Пароль."
+          },
+          "role": {
+            "description": "Роль пользователя.",
+            "$ref": "#/components/schemas/Role"
+          },
+          "cart": {
+            "description": "Корзина товаров.",
+            "$ref": "#/components/schemas/Cart"
+          },
+          "orders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Order"
+            },
+            "description": "Заказы."
+          }
+        },
+        "description": "Модель пользователя."
       }
     },
     "securitySchemes": {
@@ -267,10 +1032,19 @@
   },
   "tags": [
     {
+      "name": "Cart"
+    },
+    {
+      "name": "Images"
+    },
+    {
       "name": "Login"
     },
     {
       "name": "Orders"
+    },
+    {
+      "name": "Products"
     }
   ]
 }

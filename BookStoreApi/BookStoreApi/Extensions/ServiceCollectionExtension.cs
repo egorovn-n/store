@@ -23,5 +23,8 @@ public static class ServiceCollectionExtension
             options.UseNpgsql(configuration.GetConnectionString(StoreContext.PostgreSqlString));
         });
         services.AddScoped<ILoginService, LoginService>();
+        services.AddScoped<ICartService, CartService>();
+        services.AddScoped<IOrdersService, OrdersService>();
+        services.AddScoped<IProductsService, ProductsService>();
     }
 }

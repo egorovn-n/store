@@ -4,28 +4,28 @@ using Microsoft.IdentityModel.Tokens;
 namespace BookStoreApi.Models;
 
 /// <summary>
-/// Настройки для аутентификации
+/// Настройки для аутентификации.
 /// </summary>
 public static class AuthOptions
 {
     /// <summary>
-    /// Ключ для шифрования
+    /// Ключ для шифрования.
     /// </summary>
     private const string Key = "mysupersecret_secretsecretsecretkey!123";
 
     /// <summary>
-    /// Издатель токена
+    /// Издатель токена.
     /// </summary>
     public const string Issuer = "StoreAuthServer";
 
     /// <summary>
-    /// Потребитель токена
+    /// Потребитель токена.
     /// </summary>
     public const string Audience = "StoreWebClient";
 
     /// <summary>
-    /// Получить ключ безопасности
+    /// Получить ключ безопасности.
     /// </summary>
-    /// <returns>Ключ безопасности</returns>
+    /// <returns>Ключ безопасности.</returns>
     public static SymmetricSecurityKey GetSymmetricSecurityKey() => new(Encoding.UTF8.GetBytes(Key));
 }

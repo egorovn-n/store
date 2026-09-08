@@ -81,6 +81,7 @@ if (app.Environment.IsDevelopment())
     var dbContext = scope.ServiceProvider.GetRequiredService<StoreContext>();
     dbContext.Database.EnsureDeleted();
     dbContext.Database.EnsureCreated();
+    StoreContext.SeedData(dbContext);
 }
 
 app.UseAuthentication();

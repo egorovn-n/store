@@ -1,22 +1,42 @@
 ﻿namespace BookStoreApi.Models;
 
 /// <summary>
-/// Модель пользователя
+/// Модель пользователя.
 /// </summary>
 public class User
 {
     /// <summary>
-    /// Идентификатор
+    /// Идентификатор.
     /// </summary>
     public int Id { get; set; }
 
     /// <summary>
-    /// Имя пользователя
+    /// Идентификатор роли.
+    /// </summary>
+    public int RoleId { get; set; }
+
+    /// <summary>
+    /// Имя пользователя.
     /// </summary>
     public string Name { get; set; }
 
     /// <summary>
-    /// Пароль
+    /// Пароль.
     /// </summary>
     public string Password { get; set; }
+
+    /// <summary>
+    /// Роль пользователя.
+    /// </summary>
+    public Role Role { get; set; }
+
+    /// <summary>
+    /// Корзина товаров.
+    /// </summary>
+    public Cart Cart { get; set; }
+
+    /// <summary>
+    /// Заказы.
+    /// </summary>
+    public IEnumerable<Order> Orders { get; set; }
 }

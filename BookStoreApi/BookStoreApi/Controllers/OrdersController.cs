@@ -1,23 +1,24 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using BookStoreApi.Interfaces;
+using BookStoreApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookStoreApi.Controllers;
 
 /// <summary>
-/// Контроллер заказов
+/// Контроллер заказов.
 /// </summary>
 [Authorize]
 public class OrdersController: AppControllerBase
 {
-    private readonly ILogger<OrdersController> _logger;
+    private readonly IOrdersService _ordersService;
 
     /// <summary>
-    /// Инициализирует экземпляр класса <see cref="OrdersController"/>
+    /// Инициализирует экземпляр класса <see cref="OrdersController"/>.
     /// </summary>
-    /// <param name="logger">Класс для логирования.</param>
-    public OrdersController(ILogger<OrdersController> logger)
+    public OrdersController(IOrdersService ordersService)
     {
-        _logger = logger;
+        _ordersService = ordersService;
     }
 
     /// <summary>
@@ -29,9 +30,22 @@ public class OrdersController: AppControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public IEnumerable<string> GetOrders()
+    public IEnumerable<Order> GetOrders()
     {
-        _logger.LogInformation("Заказы получены");
-        return ["one", "two", "three"];
+        return _ordersService.GetOrders();
+    }
+
+    /// <summary>
+    /// Получение заказов.
+    /// </summary>
+    /// <returns>Список заказов.</returns>
+    /// <response code="200">Список заказов получен.</response>
+    /// <response code="401">Пользователь не авторизован.</response>
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public Order GetOrderById(int id)
+    {
+        return _ordersService.GetOrderById(id);
     }
 }
