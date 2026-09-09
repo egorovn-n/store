@@ -31,12 +31,7 @@ public class User
     public Role Role { get; set; }
 
     /// <summary>
-    /// Корзина товаров.
-    /// </summary>
-    public Cart Cart { get; set; }
-
-    /// <summary>
     /// Заказы.
     /// </summary>
-    public IEnumerable<Order> Orders { get; set; }
+    public IEnumerable<Cart> Orders { get; set; }
 }

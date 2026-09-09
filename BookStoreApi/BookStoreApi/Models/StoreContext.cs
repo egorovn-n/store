@@ -47,6 +47,11 @@ public sealed class StoreContext : DbContext
     public DbSet<ProductImage> ProductImages { get; set; } = null!;
 
     /// <summary>
+    /// Таблица для связи "Заказ-Товар".
+    /// </summary>
+    public DbSet<OrderProduct> OrderProducts { get; set; } = null!;
+
+    /// <summary>
     /// Инициализирует экземпляр класса <see cref="StoreContext"/>.
     /// </summary>
     public StoreContext (DbContextOptions<StoreContext> options) : base(options) { }
@@ -54,26 +59,6 @@ public sealed class StoreContext : DbContext
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Настройка TPH для корзин и заказов
-        modelBuilder.Entity<Cart>()
-            .HasDiscriminator<string>("Discriminator")
-            .HasValue<Cart>("Cart")
-            .HasValue<Order>("Order");
-    
-        // Настройка связи с User
-        modelBuilder.Entity<Cart>()
-            .HasOne(c => c.User)
-            .WithMany()
-            .HasForeignKey(c => c.UserId)
-            .OnDelete(DeleteBehavior.Restrict);
-    
-        // Настройка связи OrderProducts
-        modelBuilder.Entity<Cart>()
-            .HasMany(c => c.OrderProducts)
-            .WithOne(cp => cp.Order)
-            .HasForeignKey(cp => cp.OrderId)
-            .OnDelete(DeleteBehavior.Cascade);
-
         // Настройка составного первичного ключа для OrderProducts
         modelBuilder.Entity<OrderProduct>()
             .HasKey(cp => new { cp.OrderId, cp.ProductId });

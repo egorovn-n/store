@@ -17,7 +17,7 @@ public class Cart
     /// <summary>
     /// Идентификатор владельца корзины.
     /// </summary>
-    public int UserId { get; set; }
+    public int? UserId { get; set; }
 
     /// <summary>
     /// Дискриминатор для различия Cart и Order. Только для чтения.
@@ -32,5 +32,5 @@ public class Cart
     /// <summary>
     /// Владелец корзины.
     /// </summary>
-    public User User { get; set; }
+    public User? User { get; set; }
 }

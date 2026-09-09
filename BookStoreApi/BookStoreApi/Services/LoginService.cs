@@ -105,4 +105,5 @@ public class LoginService: ILoginService
     {
         return _dbContext.Users.AsNoTracking().Any(u => u.Name == username && u.Password == password);
     }
+    // TODO: сделать логаут
 }

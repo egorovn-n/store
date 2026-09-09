@@ -1,4 +1,5 @@
 ﻿using BookStoreApi.Dtos;
+using BookStoreApi.Extensions;
 using BookStoreApi.Interfaces;
 using BookStoreApi.Models;
 using Microsoft.EntityFrameworkCore;
@@ -67,22 +68,7 @@ public class ProductsService: IProductsService
             }
         }
 
-        var result = products
-            .Select(p => new
-            {
-                Product = p,
-                LastPrice = p.ProductPriceChanges
-                    .OrderByDescending(pc => pc.ChangeDateTime)
-                    .Select(pc => pc.Price)
-                    .FirstOrDefault()
-            })
-            .Select(p => new ProductFullDto
-            {
-                Id = p.Product.Id,
-                Name = p.Product.Name,
-                ImageGuids = p.Product.ProductImages.Select(i => i.Guid),
-                Price = p.LastPrice
-            }).ToList();
+        var result = products.Select(p => p.MapToFullDto()).ToList();
 
         return result;
     }

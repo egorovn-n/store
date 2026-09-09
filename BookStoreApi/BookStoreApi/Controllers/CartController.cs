@@ -28,13 +28,15 @@ public class CartController: AppControllerBase
     /// <response code="201">Товар добавлен в корзину.</response>
     /// <response code="400">Продукт не найден в БД.</response>
     /// <response code="401">Пользователь не авторизован.</response>
+    /// <exception cref="UnauthorizedAccessException">Пользователь не авторизован.</exception>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public void AddProduct(int productId)
     {
-        _cartService.AddProduct(productId);
+        CheckIsUserAuthorized(User);
+        _cartService.AddProduct(User.Identity!.Name!, productId);
     }
 
     /// <summary>
@@ -43,11 +45,13 @@ public class CartController: AppControllerBase
     /// <returns>Товары в корзины.</returns>
     /// <response code="200">Товары получены.</response>
     /// <response code="401">Пользователь не авторизован.</response>
+    /// <exception cref="UnauthorizedAccessException">Пользователь не авторизован.</exception>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public IEnumerable<ProductFullDto> GetCartItems()
+    public IEnumerable<ProductAndNumberDto> GetCartItems()
     {
-        return _cartService.GetCartItems();
+        CheckIsUserAuthorized(User);
+        return _cartService.GetCartItems(User.Identity!.Name!);
     }
 }

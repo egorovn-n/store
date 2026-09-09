@@ -1,4 +1,4 @@
-﻿using BookStoreApi.Models;
+﻿using BookStoreApi.Dtos;
 
 namespace BookStoreApi.Interfaces;
 
@@ -10,12 +10,15 @@ public interface IOrdersService
     /// <summary>
     /// Получение заказов.
     /// </summary>
+    /// <param name="username">Уникальное имя пользователя.</param>
     /// <returns>Список заказов.</returns>
-    public IEnumerable<Order> GetOrders();
+    public IEnumerable<OrderDto> GetOrderDtos(string username);
 
     /// <summary>
     /// Получение заказов.
     /// </summary>
+    /// <param name="username">Уникальное имя пользователя.</param>
+    /// <param name="orderId">Идентификатор заказа.</param>
     /// <returns>Список заказов.</returns>
-    public Order GetOrderById(int id);
+    public OrderDto GetOrderDtoById(string username, int orderId);
 }

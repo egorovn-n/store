@@ -5,17 +5,12 @@ namespace BookStoreApi.Exceptions.Login;
 /// <summary>
 /// Ошибка входа в систему
 /// </summary>
-public class LoginException: AuthenticationFailureException
+public class LoginException: Exception
 {
     private const string LoginExceptionString = "Ошибка при входе в систему. ";
 
-    /// <inheritdoc />
-    public LoginException(string? message) : base(LoginExceptionString + message)
-    {
-    }
-
-    /// <inheritdoc />
-    public LoginException(string? message, Exception? innerException) : base(LoginExceptionString + message, innerException)
-    {
-    }
+    /// <summary>
+    /// Инициализирует экземпляр класса <see cref="LoginException"/>.
+    /// </summary>
+    public LoginException(string? message) : base(LoginExceptionString + message) { }
 }

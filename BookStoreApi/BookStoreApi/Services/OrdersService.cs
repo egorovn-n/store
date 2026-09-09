@@ -1,5 +1,9 @@
-﻿using BookStoreApi.Interfaces;
+﻿using BookStoreApi.Dtos;
+using BookStoreApi.Exceptions;
+using BookStoreApi.Extensions;
+using BookStoreApi.Interfaces;
 using BookStoreApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookStoreApi.Services;
 
@@ -19,14 +23,53 @@ public class OrdersService: IOrdersService
     }
 
     /// <inheritdoc />
-    public IEnumerable<Order> GetOrders()
+    public IEnumerable<OrderDto> GetOrderDtos(string username)
     {
-        throw new NotImplementedException();
+        var orders = _dbContext.Orders.AsNoTracking()
+            .Include(o => o.User)
+            .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
+                    .ThenInclude(p => p.ProductPriceChanges)
+            .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
+                    .ThenInclude(p => p.ProductImages)
+            .Where(o => o.User.Name == username);
+
+        if (!orders.Any())
+        {
+            return [];
+        }
+
+        var result = orders.Select(o => o.MapToOrderDto()).ToList();
+        foreach (var orderDto in result)
+        {
+            orderDto.CalculateTotalPrice();
+        }
+
+        return result;
     }
 
     /// <inheritdoc />
-    public Order GetOrderById(int id)
+    public OrderDto GetOrderDtoById(string username, int orderId)
     {
-        throw new NotImplementedException();
+        var order = _dbContext.Orders.AsNoTracking()
+            .Include(o => o.User)
+            .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
+                    .ThenInclude(p => p.ProductPriceChanges)
+            .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
+                    .ThenInclude(p => p.ProductImages)
+            .FirstOrDefault(o => o.Id == orderId && o.User.Name == username);
+
+        if (order == null)
+        {
+            throw new OrderNotFoundException(orderId);
+        }
+
+        var result = order.MapToOrderDto();
+        result.CalculateTotalPrice();
+
+        return result;
     }
 }
