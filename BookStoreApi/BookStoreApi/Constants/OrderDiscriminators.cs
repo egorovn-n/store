@@ -6,7 +6,7 @@
 public abstract class OrderDiscriminators
 {
     /// <summary>
-    /// Стока для обозначения столбца дискриминатора.
+    /// Строка для обозначения столбца дискриминатора.
     /// </summary>
     public const string Discriminator = "Discriminator";
 
