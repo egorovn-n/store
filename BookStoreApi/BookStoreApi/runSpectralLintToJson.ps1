@@ -1,0 +1,1 @@
+spectral lint .\BookStoreApi.json --ruleset ..\.spectral.yml
