@@ -13,12 +13,12 @@ public class Order: Cart
     /// <summary>
     /// Статус заказа.
     /// </summary>
-    public OrderStatusEnum OrderStatus { get; set; }
+    public OrderStatusesEnum OrderStatuses { get; set; }
 
     /// <summary>
     /// Тип заказа.
     /// </summary>
-    public OrderTypeEnum OrderType { get; set; }
+    public OrderTypesEnum OrderTypes { get; set; }
 
     /// <summary>
     /// Дата и время заказа.

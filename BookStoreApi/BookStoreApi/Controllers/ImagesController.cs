@@ -1,4 +1,4 @@
-﻿using BookStoreApi.Dtos;
+﻿using BookStoreApi.Enums;
 using BookStoreApi.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,15 +20,25 @@ public class ImagesController: AppControllerBase
     }
 
     /// <summary>
-    /// Получить изображение по идентификаторам товаров.
+    /// Получить изображение.
     /// </summary>
-    /// <param name="productIds">Идентификаторы товаров.</param>
-    /// <returns>Пары гуид-картинка.</returns>
-    /// <response code="200">Картинки получены.</response>
+    /// <param name="guid">Гуид картинки.</param>
+    /// <param name="imageVariant">Запрашиваемый вариант картинки.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <returns>Файл картинки.</returns>
+    /// <response code="200">Картинка получена.</response>
+    /// <response code="400">Картинка не найдена.</response>
     [HttpGet]
+    [Route("{guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IEnumerable<FileDto>> GetImagesByProductIds(IEnumerable<int> productIds)
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetImageAsync([FromRoute] Guid guid,
+        [FromQuery] ImageVariantsEnum imageVariant = ImageVariantsEnum.Original,
+        CancellationToken cancellationToken = default)
     {
-        return await _imagesService.GetImagesByProductIdsAsync(productIds);
+        var fileBytes = await _imagesService.GetImageAsync(guid, imageVariant, cancellationToken);
+
+        return File(fileBytes.ToArray(), _imagesService.GetContentTypeByImageVariant(imageVariant),
+            $"{guid.ToString()}_{_imagesService.GetFileNameWithExtensionByImageVariant(imageVariant)}");
     }
 }

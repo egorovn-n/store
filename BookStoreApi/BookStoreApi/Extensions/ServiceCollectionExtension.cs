@@ -27,5 +27,6 @@ public static class ServiceCollectionExtension
         services.AddScoped<IOrdersService, OrdersService>();
         services.AddScoped<IProductsService, ProductsService>();
         services.AddScoped<IFileService, FileService>();
+        services.AddScoped<IImagesService, ImagesService>();
     }
 }

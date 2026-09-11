@@ -27,7 +27,7 @@ public class ProductsController: AppControllerBase
     /// <response code="200">Товары получены.</response>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public IEnumerable<ProductFullDto> GetProducts(FilterDto? filter)
+    public IEnumerable<ProductFullDto> GetProducts([FromQuery] FilterDto? filter)
     {
         return _productsService.GetProducts(filter);
     }

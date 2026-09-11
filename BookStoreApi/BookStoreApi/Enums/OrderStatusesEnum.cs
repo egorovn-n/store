@@ -3,7 +3,7 @@
 /// <summary>
 /// Статус заказа
 /// </summary>
-public enum OrderStatusEnum
+public enum OrderStatusesEnum
 {
     /// <summary>
     /// Не оплачено

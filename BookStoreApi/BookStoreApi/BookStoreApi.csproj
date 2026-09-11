@@ -32,11 +32,30 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Images\" />
+      <Folder Include="Images\Uploaded\00000000-0000-0000-0000-000000000000\" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Images\default.jpg" />
+      <None Remove="Images\default\original.jpg" />
+      <None Remove="Images\default\thumb200.webp" />
+      <None Remove="Images\default\thumb400.webp" />
+      <None Remove="Images\default\thumb800.webp" />
+      <None Remove="Images\Uploaded\00000000-0000-0000-0000-000000000000\original.jpg" />
+      <Resource Include="Images\Uploaded\00000000-0000-0000-0000-000000000000\original.jpg">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Images\Uploaded\00000000-0000-0000-0000-000000000000\thumb200.webp" />
+      <Resource Include="Images\Uploaded\00000000-0000-0000-0000-000000000000\thumb200.webp">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Images\Uploaded\00000000-0000-0000-0000-000000000000\thumb400.webp" />
+      <Resource Include="Images\Uploaded\00000000-0000-0000-0000-000000000000\thumb400.webp">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Images\Uploaded\00000000-0000-0000-0000-000000000000\thumb800.webp" />
+      <Resource Include="Images\Uploaded\00000000-0000-0000-0000-000000000000\thumb800.webp">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
     </ItemGroup>
 
 </Project>

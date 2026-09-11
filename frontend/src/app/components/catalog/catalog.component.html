@@ -3,11 +3,10 @@
         <product-filters (onFilterChange)="loadProductsFromServer($event)"></product-filters>
     </div>
     <div style="width: 65%; display: inline-block;">
-        @for (item of itemsWithNumbers; track item.product.id) {
-            <product [canChangeNumber]="!(loadingService.isLoading$ | async)"
-                [productAndNumberDto]="item"
-                (onNumberChange)="onProductNumberChange($event)"
-            ></product>
+        @for (product of products; track product.id) {
+            <product [product]="product"
+                     [isFirst]="$first">
+            </product>
         } @empty {
             Каталог пуст
         }

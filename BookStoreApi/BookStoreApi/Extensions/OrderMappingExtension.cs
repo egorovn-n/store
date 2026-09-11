@@ -17,8 +17,8 @@ public static class OrderMappingExtension
     {
         return new OrderDto
         {
-            OrderStatus = order.OrderStatus,
-            OrderType = order.OrderType,
+            OrderStatuses = order.OrderStatuses,
+            OrderTypes = order.OrderTypes,
             OrderDateTime = order.OrderDateTime,
             ProductsAndNumbers = order.OrderProducts.Select(op => op.MapToProductAndNumberDto(order.OrderDateTime))
         };

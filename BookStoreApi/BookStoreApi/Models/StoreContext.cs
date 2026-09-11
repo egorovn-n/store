@@ -73,11 +73,11 @@ public sealed class StoreContext : DbContext
     {
         var userRole = new Role
         {
-            RoleName = RoleEnum.User
+            RolesName = RolesEnum.User
         };
         var adminRole = new Role
         {
-            RoleName = RoleEnum.User
+            RolesName = RolesEnum.User
         };
         dbContext.Roles.AddRange(userRole, adminRole);
 
@@ -260,8 +260,8 @@ public sealed class StoreContext : DbContext
 
         dbContext.Orders.AddRange(new Order
             {
-                OrderStatus = OrderStatusEnum.NotPaid,
-                OrderType = OrderTypeEnum.None,
+                OrderStatuses = OrderStatusesEnum.NotPaid,
+                OrderTypes = OrderTypesEnum.None,
                 OrderDateTime = DateTime.UtcNow,
                 OrderProducts = [new OrderProduct
                     {
@@ -272,8 +272,8 @@ public sealed class StoreContext : DbContext
                 User = user
             }, new Order
             {
-                OrderStatus = OrderStatusEnum.Canceled,
-                OrderType = OrderTypeEnum.None,
+                OrderStatuses = OrderStatusesEnum.Canceled,
+                OrderTypes = OrderTypesEnum.None,
                 OrderDateTime = DateTime.UtcNow,
                 OrderProducts = [new OrderProduct
                     {
@@ -284,8 +284,8 @@ public sealed class StoreContext : DbContext
                 User = user
             }, new Order
             {
-                OrderStatus = OrderStatusEnum.Canceled,
-                OrderType = OrderTypeEnum.None,
+                OrderStatuses = OrderStatusesEnum.Canceled,
+                OrderTypes = OrderTypesEnum.None,
                 OrderDateTime = DateTime.UtcNow,
                 OrderProducts = [new OrderProduct
                     {

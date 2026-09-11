@@ -3,7 +3,7 @@
 /// <summary>
 /// Перечисление ролей пользователей
 /// </summary>
-public enum RoleEnum
+public enum RolesEnum
 {
     /// <summary>
     /// Пользователь

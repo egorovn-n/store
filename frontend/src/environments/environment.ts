@@ -1,5 +1,5 @@
 export const environment = {
-    apiUrl: 'input your url',
+    apiUrl: 'https:// input_your_url/',
 
     appTitle: 'Store'
 };

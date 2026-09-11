@@ -3,7 +3,7 @@
 /// <summary>
 /// Тип заказа
 /// </summary>
-public enum OrderTypeEnum
+public enum OrderTypesEnum
 {
     /// <summary>
     /// Не выбрано

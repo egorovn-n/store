@@ -15,7 +15,7 @@ import { environment } from '@environment/environment';
 })
 export class NavigationComponent {
     public appTitle: string = environment.appTitle;
-    public imgSrc: string = 'favicon.ico';
+    public imgSrc: string = 'logo.png';
 
     constructor(public loginService: LoginService,
                 private router: Router) {

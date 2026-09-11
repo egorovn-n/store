@@ -5,7 +5,25 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using Scalar.AspNetCore;
 
+const string allowedHostsString = "AllowedHosts";
+const string corsPolicyName = "AllowAngularApp";
+
 var builder = WebApplication.CreateBuilder(args);
+
+var allowedHosts = builder.Configuration.GetSection(allowedHostsString).Get<string[]>();
+if (allowedHosts != null && allowedHosts.Length > 0)
+{
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy(corsPolicyName, policy =>
+        {
+            policy.WithOrigins(allowedHosts)
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        });
+    });
+}
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi("v1", options =>
@@ -83,6 +101,9 @@ if (app.Environment.IsDevelopment())
     dbContext.Database.EnsureCreated();
     StoreContext.SeedData(dbContext);
 }
+
+app.UseRouting();
+app.UseCors(corsPolicyName);
 
 app.UseAuthentication();
 app.UseAuthorization();

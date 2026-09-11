@@ -1,5 +1,4 @@
-﻿using BookStoreApi.Dtos;
-using BookStoreApi.Interfaces;
+﻿using BookStoreApi.Interfaces;
 
 namespace BookStoreApi.Services;
 
@@ -8,34 +7,16 @@ namespace BookStoreApi.Services;
 /// </summary>
 public class FileService: IFileService
 {
-    private const string ImagesString = "Images";
-    private static readonly string ImagesPath = Path.Combine(Directory.GetCurrentDirectory(), ImagesString);
-
     /// <inheritdoc />
-    public async Task<FileDto?> GetFileBytesByGuidAsync(Guid guid)
+    public async Task<byte[]> GetFileBytesByGuidAsync(string filePath, CancellationToken cancellationToken = default)
     {
-        var path = Path.Combine(ImagesPath, $"{guid}.jpg");
-        if (!File.Exists(path))
+        if (!File.Exists(filePath))
         {
-            return null;
+            throw new FileNotFoundException(filePath);
         }
 
-        var bytes = await File.ReadAllBytesAsync(path);
+        var bytes = await File.ReadAllBytesAsync(filePath, cancellationToken);
 
-        return new FileDto
-        {
-            Guid = guid,
-            Bytes = bytes
-        };
-    }
-
-    /// <inheritdoc />
-    public async Task<IEnumerable<FileDto>> GetFilesBytesByGuidsAsync(IEnumerable<Guid> guids)
-    {
-        var tasks = guids.Select(GetFileBytesByGuidAsync);
-
-        var results = await Task.WhenAll(tasks);
-
-        return results.Where(x => x != null)!;
+        return bytes;
     }
 }

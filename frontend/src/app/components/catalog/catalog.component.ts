@@ -1,16 +1,13 @@
 ﻿import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { ProductComponent } from './product.component';
 import { ProductFiltersComponent } from './product-filters.component';
-import { ProductAndNumberDto } from '../../dtos/product-and-number.dto';
-import { ProductIdAndNumberDto } from '../../dtos/product-id-and-number.dto';
-import { ProductWithImgSrc } from '../../dtos/product-with-img-src.dto';
 import { ProductsApiService } from '../../services/apiservices/products.apiservice';
-import { delay, take } from 'rxjs';
+import { take } from 'rxjs';
 import { FilterModel } from '../../models/filter.model';
-import { AsyncPipe } from '@angular/common';
 import { LoadingService } from '../../services/loading.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { HtmlElementsHelper } from '../../helpers/html-elements.helper';
+import { ProductFullDto } from '../../dtos/product-full.dto';
 
 /** Компонент каталога продуктов */
 @Component({
@@ -18,8 +15,7 @@ import { HtmlElementsHelper } from '../../helpers/html-elements.helper';
     templateUrl: './catalog.component.html',
     imports: [
         ProductComponent,
-        ProductFiltersComponent,
-        AsyncPipe
+        ProductFiltersComponent
     ],
     providers: [
         ProductsApiService,
@@ -27,10 +23,13 @@ import { HtmlElementsHelper } from '../../helpers/html-elements.helper';
     ]
 })
 export class CatalogComponent implements AfterViewInit {
-    /** Список продуктов с количеством в корзине */
-    public itemsWithNumbers: ProductAndNumberDto<ProductWithImgSrc>[] = [];
+    /** Список товаров. */
+    public products: ProductFullDto[] = [];
 
-    /** Компонент с фильтрами */
+    /** Словарь "Идентификатор товара"-"Список url картинок". */
+    public productIdImageUrlMap: Map<number, string[]> = new Map<number, string[]>();
+
+    /** Компонент с фильтрами. */
     @ViewChild(ProductFiltersComponent, { static: false })
     private filtersComponent: ProductFiltersComponent | undefined;
 
@@ -55,28 +54,14 @@ export class CatalogComponent implements AfterViewInit {
         });
     }
 
-    /** Коллбэк для изменения количества продуктов в корзине */
-    public onProductNumberChange(productIdAndNumberDto: ProductIdAndNumberDto) {
-        if (this.loadingService.getIsLoadingValue()) {
-            return;
-        }
-        let productIndex = this.itemsWithNumbers.findIndex(
-            (item) => item.product.id === productIdAndNumberDto.productId
-        );
-        if (productIndex < 0) {
-            return;
-        }
-        this.itemsWithNumbers[productIndex].productsNumber = productIdAndNumberDto.productNumber;
-    }
-
-    /** Загрузить продукты с сервера учитывая фильтры */
+    /** Загрузить товары с сервера учитывая фильтры. */
     protected loadProductsFromServer(filter: FilterModel): void {
         if (this.loadingService.getIsLoadingValue()) {
             return;
         }
         this.loadingService.startLoading();
         this.productsApiService.getProducts(filter).pipe(take(1)).subscribe(products => {
-            this.itemsWithNumbers = products;
+            this.products = products;
             this.loadingService.endLoading();
             // При проверке с delay каталог не отрисовывался без изменений на странице в
             // браузере, поэтому использовал detectChanges()

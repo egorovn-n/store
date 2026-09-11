@@ -15,5 +15,5 @@ public class Role
     /// <summary>
     /// Наименование роли.
     /// </summary>
-    public RoleEnum RoleName { get; set; }
+    public RolesEnum RolesName { get; set; }
 }

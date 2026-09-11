@@ -149,83 +149,53 @@
         }
       }
     },
-    "/api/Images/GetImagesByProductIds": {
+    "/api/Images/GetImage/{guid}": {
       "get": {
         "tags": [
           "Images"
         ],
-        "summary": "Получить изображение по идентификаторам товаров.",
-        "requestBody": {
-          "description": "Идентификаторы товаров.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "pattern": "^-?(?:0|[1-9]\\d*)$",
-                  "type": [
-                    "integer",
-                    "string"
-                  ],
-                  "format": "int32"
-                }
-              }
-            },
-            "text/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "pattern": "^-?(?:0|[1-9]\\d*)$",
-                  "type": [
-                    "integer",
-                    "string"
-                  ],
-                  "format": "int32"
-                }
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "pattern": "^-?(?:0|[1-9]\\d*)$",
-                  "type": [
-                    "integer",
-                    "string"
-                  ],
-                  "format": "int32"
-                }
-              }
+        "summary": "Получить изображение.",
+        "parameters": [
+          {
+            "name": "guid",
+            "in": "path",
+            "description": "Гуид картинки.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
             }
           },
-          "required": true
-        },
+          {
+            "name": "imageVariant",
+            "in": "query",
+            "description": "Запрашиваемый вариант картинки.",
+            "schema": {
+              "default": 0,
+              "$ref": "#/components/schemas/ImageVariantsEnum"
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Картинки получены.",
+            "description": "Картинка получена."
+          },
+          "400": {
+            "description": "Картинка не найдена.",
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/FileDto"
-                  }
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/FileDto"
-                  }
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/FileDto"
-                  }
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -482,47 +452,50 @@
           "Products"
         ],
         "summary": "Получить товары по фильтру.",
-        "requestBody": {
-          "description": "Фильтр.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "oneOf": [
-                  {
-                    "type": "null"
-                  },
-                  {
-                    "$ref": "#/components/schemas/FilterDto"
-                  }
-                ]
-              }
-            },
-            "text/json": {
-              "schema": {
-                "oneOf": [
-                  {
-                    "type": "null"
-                  },
-                  {
-                    "$ref": "#/components/schemas/FilterDto"
-                  }
-                ]
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "oneOf": [
-                  {
-                    "type": "null"
-                  },
-                  {
-                    "$ref": "#/components/schemas/FilterDto"
-                  }
-                ]
-              }
+        "parameters": [
+          {
+            "name": "ProductName",
+            "in": "query",
+            "description": "Наименование товара",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "PriceFrom",
+            "in": "query",
+            "description": "Цена от",
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?$",
+              "type": [
+                "number",
+                "string"
+              ],
+              "format": "double"
+            }
+          },
+          {
+            "name": "PriceTo",
+            "in": "query",
+            "description": "Цена до",
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?$",
+              "type": [
+                "number",
+                "string"
+              ],
+              "format": "double"
+            }
+          },
+          {
+            "name": "OnlyInStock",
+            "in": "query",
+            "description": "Получать только товары в наличии",
+            "schema": {
+              "type": "boolean"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "Товары получены.",
@@ -559,68 +532,9 @@
   },
   "components": {
     "schemas": {
-      "FileDto": {
-        "type": "object",
-        "properties": {
-          "guid": {
-            "type": "string",
-            "description": "Гуид",
-            "format": "uuid"
-          },
-          "bytes": {
-            "type": "array",
-            "items": {
-              "pattern": "^-?(?:0|[1-9]\\d*)$",
-              "type": [
-                "integer",
-                "string"
-              ],
-              "format": "uint8"
-            },
-            "description": "Байты"
-          }
-        },
-        "description": "Dto файла"
-      },
-      "FilterDto": {
-        "type": "object",
-        "properties": {
-          "productName": {
-            "type": [
-              "null",
-              "string"
-            ],
-            "description": "Наименование товара"
-          },
-          "priceFrom": {
-            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?$",
-            "type": [
-              "null",
-              "number",
-              "string"
-            ],
-            "description": "Цена от",
-            "format": "double"
-          },
-          "priceTo": {
-            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?$",
-            "type": [
-              "null",
-              "number",
-              "string"
-            ],
-            "description": "Цена до",
-            "format": "double"
-          },
-          "onlyInStock": {
-            "type": [
-              "null",
-              "boolean"
-            ],
-            "description": "Получать только товары в наличии"
-          }
-        },
-        "description": "Dto фильтра"
+      "ImageVariantsEnum": {
+        "type": "integer",
+        "description": "Перечисление доступных вариантов картинок для выдачи."
       },
       "LoginResponseDto": {
         "type": "object",
@@ -639,13 +553,13 @@
       "OrderDto": {
         "type": "object",
         "properties": {
-          "orderStatus": {
+          "orderStatuses": {
             "description": "Статус заказа.",
-            "$ref": "#/components/schemas/OrderStatusEnum"
+            "$ref": "#/components/schemas/OrderStatusesEnum"
           },
-          "orderType": {
+          "orderTypes": {
             "description": "Тип заказа.",
-            "$ref": "#/components/schemas/OrderTypeEnum"
+            "$ref": "#/components/schemas/OrderTypesEnum"
           },
           "orderDateTime": {
             "type": "string",
@@ -671,11 +585,11 @@
         },
         "description": "Дто заказа"
       },
-      "OrderStatusEnum": {
+      "OrderStatusesEnum": {
         "type": "integer",
         "description": "Статус заказа"
       },
-      "OrderTypeEnum": {
+      "OrderTypesEnum": {
         "type": "integer",
         "description": "Тип заказа"
       },

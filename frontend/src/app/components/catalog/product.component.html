@@ -1,23 +1,28 @@
 <div class="product-card">
-    @if (!productAndNumberDto) {
-        <span>Проблема с загрузкой товара</span>
+    @if (!product) {
+        <span>Ошибка при загрузке товара.</span>
     } @else {
-        <span>{{ productAndNumberDto.product.name }}</span>
+        <span>{{ product.name }}</span>
+<!--       TODO: сделать карусель картинок-->
+        <!-- Приоритет для первой картинки, чтобы убрать предупреждение о Largest Contentful Paint (LCP) element -->
         <img class="product-card-img"
-             [alt]="productAndNumberDto.product.name"
-             [ngSrc]="productAndNumberDto.product.imgSrc"
-             width="100"
-             height="100" />
-        <span>{{ productAndNumberDto.product.price }} р.</span>
+             [alt]="product.name"
+             [ngSrc]="imageUrls[0] ? imageUrls[0] : 'product-placeholder-image/thumb200.webp'"
+             width="200"
+             height="200"
+             [priority]="isFirst"
+             (error)="onImageError($event)"
+        />
+        <span>{{ product.price }} р.</span>
         <br>
-        @if (productAndNumberDto.productsNumber === 0) {
-            <button class="right" (click)="numberIncrement()">В корзину</button>
-        } @else {
-            <div class="right">
-                <a (click)="numberDecrement()">-</a>
-                <span>{{productAndNumberDto.productsNumber}}</span>
-                <a (click)="numberIncrement()">+</a>
-            </div>
-        }
+<!--        @if (productAndNumberDto.productsNumber === 0) {-->
+<!--            <button class="right" (click)="numberIncrement()">В корзину</button>-->
+<!--        } @else {-->
+<!--            <div class="right">-->
+<!--                <a (click)="numberDecrement()">-</a>-->
+<!--                <span>{{productAndNumberDto.productsNumber}}</span>-->
+<!--                <a (click)="numberIncrement()">+</a>-->
+<!--            </div>-->
+<!--        }-->
     }
 </div>
