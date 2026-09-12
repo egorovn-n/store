@@ -32,7 +32,7 @@ public class ProductsService: IProductsService
         {
             if (!string.IsNullOrWhiteSpace(filter.ProductName))
             {
-                products = products.Where(p => p.Name.Contains(filter.ProductName));
+                products = products.Where(p => p.Name.ToLower().Contains(filter.ProductName.ToLower()));
             }
             if (filter.PriceFrom != null)
             {
