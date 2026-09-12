@@ -6,11 +6,6 @@
 public enum OrderTypesEnum
 {
     /// <summary>
-    /// Не выбрано
-    /// </summary>
-    None,
-
-    /// <summary>
     /// Самовывоз
     /// </summary>
     Pickup,

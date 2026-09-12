@@ -1,4 +1,8 @@
-﻿export enum RolesEnum {
-    Admin = 'admin',
+﻿/** Перечисление ролей пользователей. */
+export enum RolesEnum {
+    /** Пользователь без привилегий. */
     User = 'user',
+
+    /** Администратор. */
+    Admin = 'admin',
 }

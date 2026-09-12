@@ -9,19 +9,19 @@ namespace BookStoreApi.Interfaces;
 public interface ILoginService
 {
     /// <summary>
-    /// Вход пользователя в приложение.
+    /// Вход пользователя.
     /// </summary>
-    /// <param name="username">Имя пользователя.</param>
+    /// <param name="email">Почта пользователя.</param>
     /// <param name="password">Пароль.</param>
     /// <returns>Dto ответа с jwt токеном и именем пользователя.</returns>
     /// <exception cref="LoginException">Ошибка входа в систему.</exception>
-    public LoginResponseDto Login(string username, string password);
+    public LoginResponseDto Login(string email, string password);
 
     /// <summary>
     /// Регистрация пользователя в приложение.
     /// </summary>
-    /// <param name="username">Имя пользователя.</param>
+    /// <param name="email">Почта пользователя.</param>
     /// <param name="password">Пароль.</param>
-    /// <exception cref="RegistrationException">Имя пользователя занято.</exception>
-    public void Register(string username, string password);
+    /// <exception cref="RegistrationException">Почта уже зарегистрирована.</exception>
+    public void Register(string email, string password);
 }

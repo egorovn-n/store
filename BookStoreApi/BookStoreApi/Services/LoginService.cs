@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using BookStoreApi.Dtos;
+using BookStoreApi.Enums;
 using BookStoreApi.Exceptions.Login;
 using BookStoreApi.Interfaces;
 using BookStoreApi.Models;
@@ -29,16 +30,17 @@ public class LoginService: ILoginService
     }
 
     /// <inheritdoc />
-    public LoginResponseDto Login(string username, string password)
+    public LoginResponseDto Login(string email, string password)
     {
-        if (!CheckUserExists(username))
+        var user = GetUserByEmail(email);
+        if (user == null)
         {
-            throw new LoginException($"Пользователя с именем {username} не существует в БД.");
+            throw new LoginException($"Пользователя с почтой {email} не существует в БД.");
         }
 
-        if (!CheckPassword(username, password))
+        if (user.Password != password)
         {
-            _logger.LogWarning($"Неудачная попытка входа в профиль {username}.");
+            _logger.LogWarning($"Неудачная попытка входа в профиль {email}.");
             throw new LoginException($"Введен неправильный пароль.");
         }
 
@@ -46,64 +48,57 @@ public class LoginService: ILoginService
             issuer: AuthOptions.Issuer,
             audience: AuthOptions.Audience,
             claims: [
-                new Claim(ClaimTypes.Name, username)
+                new Claim(ClaimTypes.Name, user.Email),
+                new Claim(ClaimTypes.Role, user.Role.ToString())
             ],
-            expires: DateTime.UtcNow.AddHours(1),
+            expires: DateTime.UtcNow.AddDays(1),
             signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(),
                 SecurityAlgorithms.HmacSha256));
         var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
         if (encodedJwt == null)
         {
-            _logger.LogWarning($"Создан пустой jwt токен при попытке входа в профиль {username}.");
+            _logger.LogWarning($"Создан пустой jwt токен при попытке входа в профиль {email}.");
             throw new LoginException($"Ошибка при создании jwt токена.");
         }
 
-        _logger.LogInformation($"Успешный вход в профиль {username}.");
+        _logger.LogInformation($"Успешный вход в профиль {email}.");
         return new LoginResponseDto
         {
             AccessToken = encodedJwt,
-            Username = username
+            Email = email,
+            Role = user.Role
         };
     }
 
     /// <inheritdoc />
-    public void Register(string username, string password)
+    public void Register(string email, string password)
     {
-        if (CheckUserExists(username))
+        var user = GetUserByEmail(email);
+        if (user != null)
         {
-            _logger.LogInformation($"Попытка регистрации на существующее имя пользователя {username}");
-            throw new RegistrationException($"Имя пользователя \"{username}\" уже занято.");
+            _logger.LogInformation($"Попытка регистрации на уже зарегистрированную почту {email}");
+            throw new RegistrationException($"Почта \"{email}\" уже зарегистрирована.");
         }
 
         _dbContext.Users.Add(new User
         {
-            Name = username,
-            Password = password
+            Email = email,
+            Password = password,
+            Role = RolesEnum.User
         });
         _dbContext.SaveChanges();
-        _logger.LogInformation($"Произведена регистрация пользователя {username}");
+        _logger.LogInformation($"Произведена регистрация пользователя {email}");
     }
 
     /// <summary>
-    /// Проверка на то, что пользователь уже существует в БД
+    /// Получить пользователя по почте.
     /// </summary>
-    /// <param name="username">Имя пользователя</param>
-    /// <returns>True, если существует</returns>
-    private bool CheckUserExists(string username)
+    /// <param name="email">Почта пользователя.</param>
+    /// <returns>Пользователь или null.</returns>
+    private User? GetUserByEmail(string email)
     {
-        return _dbContext.Users.AsNoTracking().Any(u => u.Name == username);
-    }
-
-    /// <summary>
-    /// Проверка пароля для пользователя
-    /// </summary>
-    /// <param name="username">Имя пользователя</param>
-    /// <param name="password">Пароль</param>
-    /// <returns>True, если пароль подходит к имени пользователя</returns>
-    private bool CheckPassword(string username, string password)
-    {
-        return _dbContext.Users.AsNoTracking().Any(u => u.Name == username && u.Password == password);
+        return _dbContext.Users.AsNoTracking().FirstOrDefault(u => u.Email == email);
     }
     // TODO: сделать логаут
 }

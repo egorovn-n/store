@@ -23,32 +23,30 @@ public class LoginController: AppControllerBase
     /// <summary>
     /// Вход пользователя в систему.
     /// </summary>
-    /// <param name="username">Имя пользователя.</param>
-    /// <param name="password">Пароль.</param>
+    /// <param name="loginRequestDto">Почта и пароль пользователя.</param>
     /// <returns>Dto ответа с jwt токеном и именем пользователя.</returns>
     /// <response code="200">Успешная аутентификация, выслан токен.</response>
-    /// <response code="400">Неверное имя пользователя или пароль.</response>
+    /// <response code="400">Неверная почта или пароль.</response>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public LoginResponseDto Login(string username, string password)
+    public LoginResponseDto Login(LoginRequestDto loginRequestDto)
     {
-        var responseDto = _loginService.Login(username, password);
+        var responseDto = _loginService.Login(loginRequestDto.Email, loginRequestDto.Password);
         return responseDto;
     }
 
     /// <summary>
     /// Регистрация пользователя.
     /// </summary>
-    /// <param name="username">Имя пользователя.</param>
-    /// <param name="password">Пароль.</param>
+    /// <param name="loginRequestDto">Почта и пароль пользователя.</param>
     /// <response code="200">Успешная регистрация.</response>
-    /// <response code="400">Имя пользователя занято.</response>
+    /// <response code="400">Почта уже зарегистрирована.</response>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public void Register(string username, string password)
+    public void Register(LoginRequestDto loginRequestDto)
     {
-        _loginService.Register(username, password);
+        _loginService.Register(loginRequestDto.Email, loginRequestDto.Password);
     }
 }

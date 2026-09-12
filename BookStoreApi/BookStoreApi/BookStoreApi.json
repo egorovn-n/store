@@ -209,24 +209,27 @@
           "Login"
         ],
         "summary": "Вход пользователя в систему.",
-        "parameters": [
-          {
-            "name": "username",
-            "in": "query",
-            "description": "Имя пользователя.",
-            "schema": {
-              "type": "string"
+        "requestBody": {
+          "description": "Почта и пароль пользователя.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequestDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequestDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequestDto"
+              }
             }
           },
-          {
-            "name": "password",
-            "in": "query",
-            "description": "Пароль.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Успешная аутентификация, выслан токен.",
@@ -249,7 +252,7 @@
             }
           },
           "400": {
-            "description": "Неверное имя пользователя или пароль.",
+            "description": "Неверная почта или пароль.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -277,30 +280,33 @@
           "Login"
         ],
         "summary": "Регистрация пользователя.",
-        "parameters": [
-          {
-            "name": "username",
-            "in": "query",
-            "description": "Имя пользователя.",
-            "schema": {
-              "type": "string"
+        "requestBody": {
+          "description": "Почта и пароль пользователя.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequestDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequestDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequestDto"
+              }
             }
           },
-          {
-            "name": "password",
-            "in": "query",
-            "description": "Пароль.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Успешная регистрация."
           },
           "400": {
-            "description": "Имя пользователя занято.",
+            "description": "Почта уже зарегистрирована.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -536,16 +542,34 @@
         "type": "integer",
         "description": "Перечисление доступных вариантов картинок для выдачи."
       },
+      "LoginRequestDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Почта пользователя."
+          },
+          "password": {
+            "type": "string",
+            "description": "Пароль."
+          }
+        },
+        "description": "Dto запроса логина."
+      },
       "LoginResponseDto": {
         "type": "object",
         "properties": {
-          "access_token": {
+          "accessToken": {
             "type": "string",
-            "description": "Jwt токен доступа"
+            "description": "Jwt токен доступа."
           },
-          "username": {
+          "email": {
             "type": "string",
-            "description": "Имя пользователя"
+            "description": "Почта пользователя."
+          },
+          "role": {
+            "description": "Роль пользователя.",
+            "$ref": "#/components/schemas/RolesEnum"
           }
         },
         "description": "Dto для ответа на вход в профиль."
@@ -685,6 +709,10 @@
           }
         },
         "description": "Dto товара со всей информацией."
+      },
+      "RolesEnum": {
+        "type": "integer",
+        "description": "Перечисление ролей пользователей"
       }
     },
     "securitySchemes": {

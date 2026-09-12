@@ -1,7 +1,12 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component, ElementRef, signal, ViewChild } from '@angular/core';
 import { LoginService } from '../../services/login.service';
 import { FormsModule } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { HtmlElementsHelper } from '../../helpers/html-elements.helper';
+import { LoadingService } from '../../services/loading.service';
+import { ErrorsConstants } from '../../constants/errors.constants';
 
+/** Компонент формы регистрации пользователей. */
 @Component({
     selector: 'registration',
     templateUrl: './registration.component.html',
@@ -11,30 +16,43 @@ export class RegistrationComponent {
     public email: string = '';
     public password: string = '';
     public repeatedPassword: string = '';
-    public errorText: string = '';
-    public successText: string = '';
+    public errorText = signal('');
+    public successText = signal('');
 
-    constructor(private loginService: LoginService) {
+    @ViewChild('registrationForm', { static: false })
+    private registrationForm: ElementRef | undefined;
 
+    constructor(private loginService: LoginService,
+                private loadingService: LoadingService) {
+        loadingService.isLoading$.pipe(takeUntilDestroyed()).subscribe(isLoading => {
+            HtmlElementsHelper.setInputDisabledAttribute(isLoading, this.registrationForm);
+            HtmlElementsHelper.setButtonDisabledAttribute(isLoading, this.registrationForm);
+        });
     }
 
+    /** Обработчик кнопки регистрации. */
     public onRegistrationClick(): void {
-        this.errorText = '';
-        this.successText = '';
+        this.errorText.set('');
+        this.successText.set('');
         if (this.loginService.isLoggedIn()) {
-            this.errorText = 'Сначала выйдите из текущего аккаунта';
+            this.errorText.set('Сначала совершите выход из текущего аккаунта.');
 
             return;
         }
         if (this.password !== this.repeatedPassword) {
-            this.errorText = 'Введенные пароли не совпадают';
+            this.errorText.set('Введенные пароли не совпадают.');
 
             return;
         }
-        if (this.loginService.register(this.email, this.password)) {
-            this.successText = 'Регистрация прошла успешно!';
-        } else {
-            this.errorText = 'Не удалось зарегистрировать аккаунт на заданный email';
-        }
+
+        this.loadingService.startLoading();
+        this.loginService.register(this.email, this.password).subscribe({
+            next: () => {
+                this.loadingService.endLoading();
+                this.successText.set('Регистрация прошла успешно!');
+            }, error: err => {
+                this.loadingService.endLoading();
+                this.errorText.set(err.error?.title ?? ErrorsConstants.UnknownErrorText);
+            }});
     }
 }

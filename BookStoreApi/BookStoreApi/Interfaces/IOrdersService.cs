@@ -10,15 +10,15 @@ public interface IOrdersService
     /// <summary>
     /// Получение заказов.
     /// </summary>
-    /// <param name="username">Уникальное имя пользователя.</param>
+    /// <param name="email">Почта пользователя.</param>
     /// <returns>Список заказов.</returns>
-    public IEnumerable<OrderDto> GetOrderDtos(string username);
+    public IEnumerable<OrderDto> GetOrderDtos(string email);
 
     /// <summary>
     /// Получение заказов.
     /// </summary>
-    /// <param name="username">Уникальное имя пользователя.</param>
+    /// <param name="email">Почта пользователя.</param>
     /// <param name="orderId">Идентификатор заказа.</param>
     /// <returns>Список заказов.</returns>
-    public OrderDto GetOrderDtoById(string username, int orderId);
+    public OrderDto GetOrderDtoById(string email, int orderId);
 }

@@ -1,4 +1,6 @@
-﻿namespace BookStoreApi.Models;
+﻿using BookStoreApi.Enums;
+
+namespace BookStoreApi.Models;
 
 /// <summary>
 /// Модель пользователя.
@@ -11,14 +13,9 @@ public class User
     public int Id { get; set; }
 
     /// <summary>
-    /// Идентификатор роли.
+    /// Почта пользователя.
     /// </summary>
-    public int RoleId { get; set; }
-
-    /// <summary>
-    /// Имя пользователя.
-    /// </summary>
-    public string Name { get; set; }
+    public string Email { get; set; }
 
     /// <summary>
     /// Пароль.
@@ -28,7 +25,7 @@ public class User
     /// <summary>
     /// Роль пользователя.
     /// </summary>
-    public Role Role { get; set; }
+    public RolesEnum Role { get; set; }
 
     /// <summary>
     /// Заказы.

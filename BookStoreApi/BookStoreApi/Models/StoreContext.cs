@@ -12,11 +12,6 @@ public sealed class StoreContext : DbContext
     public const string PostgreSqlString = "PostgreSQL";
 
     /// <summary>
-    /// Таблица "Роли".
-    /// </summary>
-    public DbSet<Role> Roles { get; set; } = null!;
-
-    /// <summary>
     /// Таблица "Пользователи".
     /// </summary>
     public DbSet<User> Users { get; set; } = null!;
@@ -62,6 +57,21 @@ public sealed class StoreContext : DbContext
         // Настройка составного первичного ключа для OrderProducts
         modelBuilder.Entity<OrderProduct>()
             .HasKey(cp => new { cp.OrderId, cp.ProductId });
+
+        modelBuilder
+            .Entity<User>()
+            .Property(e => e.Role)
+            .HasConversion<string>();
+
+        modelBuilder
+            .Entity<Order>()
+            .Property(e => e.OrderStatuses)
+            .HasConversion<string>();
+
+        modelBuilder
+            .Entity<Order>()
+            .Property(e => e.OrderTypes)
+            .HasConversion<string>();
     
         base.OnModelCreating(modelBuilder);
     }
@@ -71,27 +81,17 @@ public sealed class StoreContext : DbContext
     /// </summary>
     public static void SeedData(StoreContext dbContext)
     {
-        var userRole = new Role
-        {
-            RolesName = RolesEnum.User
-        };
-        var adminRole = new Role
-        {
-            RolesName = RolesEnum.User
-        };
-        dbContext.Roles.AddRange(userRole, adminRole);
-
         var user = new User
         {
-            Name = "qwe",
+            Email = "qwe",
             Password = "qwe",
-            Role = userRole
+            Role = RolesEnum.User
         };
         var admin = new User
         {
-            Name = "admin",
+            Email = "admin",
             Password = "admin",
-            Role = adminRole
+            Role = RolesEnum.Admin
         };
         dbContext.Users.AddRange(user, admin);
 
@@ -261,7 +261,7 @@ public sealed class StoreContext : DbContext
         dbContext.Orders.AddRange(new Order
             {
                 OrderStatuses = OrderStatusesEnum.NotPaid,
-                OrderTypes = OrderTypesEnum.None,
+                OrderTypes = OrderTypesEnum.Delivery,
                 OrderDateTime = DateTime.UtcNow,
                 OrderProducts = [new OrderProduct
                     {
@@ -273,7 +273,7 @@ public sealed class StoreContext : DbContext
             }, new Order
             {
                 OrderStatuses = OrderStatusesEnum.Canceled,
-                OrderTypes = OrderTypesEnum.None,
+                OrderTypes = OrderTypesEnum.Pickup,
                 OrderDateTime = DateTime.UtcNow,
                 OrderProducts = [new OrderProduct
                     {
@@ -285,7 +285,7 @@ public sealed class StoreContext : DbContext
             }, new Order
             {
                 OrderStatuses = OrderStatusesEnum.Canceled,
-                OrderTypes = OrderTypesEnum.None,
+                OrderTypes = OrderTypesEnum.Delivery,
                 OrderDateTime = DateTime.UtcNow,
                 OrderProducts = [new OrderProduct
                     {

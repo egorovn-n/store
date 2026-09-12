@@ -1,3 +1,4 @@
+using BookStoreApi.Exceptions;
 using BookStoreApi.Extensions;
 using BookStoreApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -26,6 +27,9 @@ if (allowedHosts != null && allowedHosts.Length > 0)
 }
 
 builder.Services.AddControllers();
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<AppExceptionHandler>();
+
 builder.Services.AddOpenApi("v1", options =>
 {
     options.AddDocumentTransformer((document, _, _) =>
@@ -105,6 +109,7 @@ if (app.Environment.IsDevelopment())
 app.UseRouting();
 app.UseCors(corsPolicyName);
 
+app.UseExceptionHandler();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

@@ -24,18 +24,18 @@ public class CartService: ICartService
     }
 
     /// <inheritdoc />
-    public void AddProduct(string username, int productId, int productsNumber = 1)
+    public void AddProduct(string email, int productId, int productsNumber = 1)
     {
         if (productsNumber == 0)
         {
             return;
         }
 
-        var cart = GetCartByUsername(username) ?? GetCartByUsername(username);
+        var cart = GetCartByEmail(email);
 
         if (cart == null)
         {
-            throw new CartNotFoundException(username);
+            throw new CartNotFoundException(email);
         }
 
         if (cart.OrderProducts.Any(op => op.ProductId == productId))
@@ -74,18 +74,18 @@ public class CartService: ICartService
     }
 
     /// <inheritdoc />
-    public void SetProductNumber(string username, int productId, int productsNumber)
+    public void SetProductNumber(string email, int productId, int productsNumber)
     {
         if (productsNumber < 0)
         {
             throw new ArgumentOutOfRangeException(nameof(productsNumber));
         }
 
-        var cart = GetCartByUsername(username) ?? GetCartByUsername(username);
+        var cart = GetCartByEmail(email);
 
         if (cart == null)
         {
-            throw new CartNotFoundException(username);
+            throw new CartNotFoundException(email);
         }
 
         if (cart.OrderProducts.Any(op => op.ProductId == productId))
@@ -111,7 +111,7 @@ public class CartService: ICartService
     }
 
     /// <inheritdoc />
-    public IEnumerable<ProductAndNumberDto> GetCartItems(string username)
+    public IEnumerable<ProductAndNumberDto> GetCartItems(string email)
     {
         var cart = _dbContext.Carts.AsNoTracking()
             .Include(c => c.User)
@@ -121,11 +121,11 @@ public class CartService: ICartService
             .Include(c => c.OrderProducts)
                 .ThenInclude(op => op.Product)
                     .ThenInclude(p => p.ProductImages)
-            .SingleOrDefault(c => c.User.Name == username && c.Discriminator == OrderDiscriminators.Cart);
+            .SingleOrDefault(c => c.User != null && c.User.Email == email && c.Discriminator == OrderDiscriminators.Cart);
 
         if (cart == null)
         {
-            throw new CartNotFoundException(username);
+            throw new CartNotFoundException(email);
         }
 
         var products = cart.OrderProducts.Select(op => op.MapToProductAndNumberDto()).ToList();
@@ -134,16 +134,16 @@ public class CartService: ICartService
     }
 
     /// <summary>
-    /// Получить корзину товаров включая пользователя и связь с идентификаторами товаров по имени пользователя.
+    /// Получить корзину товаров включая пользователя и связь с идентификаторами товаров по почте пользователя.
     /// </summary>
-    /// <param name="username">Имя пользователя.</param>
+    /// <param name="email">Почта пользователя.</param>
     /// <returns>Корзина товаров или null.</returns>
-    private Cart? GetCartByUsername(string username)
+    private Cart? GetCartByEmail(string email)
     {
         var cart = _dbContext.Carts.AsNoTracking()
             .Include(c => c.User)
             .Include(c => c.OrderProducts)
-            .SingleOrDefault(c => c.User.Name == username && c.Discriminator == OrderDiscriminators.Cart);
+            .SingleOrDefault(c => c.User != null && c.User.Email == email && c.Discriminator == OrderDiscriminators.Cart);
 
         return cart;
     }

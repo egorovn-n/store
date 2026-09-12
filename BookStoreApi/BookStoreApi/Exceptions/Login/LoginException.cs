@@ -1,16 +1,15 @@
-﻿using Microsoft.AspNetCore.Authentication;
-
-namespace BookStoreApi.Exceptions.Login;
+﻿namespace BookStoreApi.Exceptions.Login;
 
 /// <summary>
 /// Ошибка входа в систему
 /// </summary>
-public class LoginException: Exception
+public class LoginException: BaseAppException
 {
-    private const string LoginExceptionString = "Ошибка при входе в систему. ";
+    /// <inheritdoc />
+    public override string MessageForLogs { get; } = "Ошибка при входе в систему. ";
 
     /// <summary>
     /// Инициализирует экземпляр класса <see cref="LoginException"/>.
     /// </summary>
-    public LoginException(string? message) : base(LoginExceptionString + message) { }
+    public LoginException(string? message) : base(message) { }
 }

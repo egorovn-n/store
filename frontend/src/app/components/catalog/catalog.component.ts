@@ -18,16 +18,12 @@ import { ProductFullDto } from '../../dtos/product-full.dto';
         ProductFiltersComponent
     ],
     providers: [
-        ProductsApiService,
-        LoadingService
+        ProductsApiService
     ]
 })
 export class CatalogComponent implements AfterViewInit {
     /** Список товаров. */
     public products: ProductFullDto[] = [];
-
-    /** Словарь "Идентификатор товара"-"Список url картинок". */
-    public productIdImageUrlMap: Map<number, string[]> = new Map<number, string[]>();
 
     /** Компонент с фильтрами. */
     @ViewChild(ProductFiltersComponent, { static: false })
@@ -42,7 +38,7 @@ export class CatalogComponent implements AfterViewInit {
         loadingService.isLoading$.pipe(takeUntilDestroyed()).subscribe(isLoading => {
             HtmlElementsHelper.setInputDisabledAttribute(isLoading, this.catalog);
             HtmlElementsHelper.setButtonDisabledAttribute(isLoading, this.catalog);
-        })
+        });
     }
 
     public ngAfterViewInit() {

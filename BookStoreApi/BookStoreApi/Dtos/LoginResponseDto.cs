@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using BookStoreApi.Enums;
 
 namespace BookStoreApi.Dtos;
 
@@ -8,14 +8,17 @@ namespace BookStoreApi.Dtos;
 public class LoginResponseDto
 {
     /// <summary>
-    /// Jwt токен доступа
+    /// Jwt токен доступа.
     /// </summary>
-    [JsonPropertyName("access_token")]
     public string AccessToken { get; set; }
 
     /// <summary>
-    /// Имя пользователя
+    /// Почта пользователя.
     /// </summary>
-    [JsonPropertyName("username")]
-    public string Username { get; set; }
+    public string Email { get; set; }
+
+    /// <summary>
+    /// Роль пользователя.
+    /// </summary>
+    public RolesEnum Role { get; set; }
 }

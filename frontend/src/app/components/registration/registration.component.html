@@ -1,15 +1,15 @@
-﻿<div>
+﻿<div #registrationForm>
     <p>Электронная почта</p>
     <input type="text" [(ngModel)]="email">
     <p>Пароль</p>
     <input type="password" [(ngModel)]="password">
     <p>Повторите пароль</p>
     <input type="password" [(ngModel)]="repeatedPassword">
-    @if (errorText) {
-        <p class="color-danger">{{errorText}}</p>
+    @if (errorText()) {
+        <p class="color-danger">{{errorText()}}</p>
     }
-    @if (successText) {
-        <p class="color-success">{{successText}}</p>
+    @if (successText()) {
+        <p class="color-success">{{successText()}}</p>
     }
     <br>
     <button (click)="onRegistrationClick()">Зарегистрироваться</button>

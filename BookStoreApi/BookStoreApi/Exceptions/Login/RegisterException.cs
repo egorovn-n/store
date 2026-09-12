@@ -3,12 +3,13 @@
 /// <summary>
 /// Ошибка при регистрации.
 /// </summary>
-public class RegistrationException: Exception
+public class RegistrationException: BaseAppException
 {
-    private const string RegistrationExceptionString = "Ошибка при регистрации. ";
+    /// <inheritdoc />
+    public override string MessageForLogs { get; } = "Ошибка при регистрации. ";
 
     /// <summary>
     /// Инициализирует класс <see cref="RegistrationException"/>.
     /// </summary>
-    public RegistrationException(string message): base(RegistrationExceptionString + message) { }
+    public RegistrationException(string message): base(message) { }
 }

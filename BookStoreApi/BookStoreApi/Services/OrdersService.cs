@@ -23,7 +23,7 @@ public class OrdersService: IOrdersService
     }
 
     /// <inheritdoc />
-    public IEnumerable<OrderDto> GetOrderDtos(string username)
+    public IEnumerable<OrderDto> GetOrderDtos(string email)
     {
         var orders = _dbContext.Orders.AsNoTracking()
             .Include(o => o.User)
@@ -33,7 +33,7 @@ public class OrdersService: IOrdersService
             .Include(o => o.OrderProducts)
                 .ThenInclude(op => op.Product)
                     .ThenInclude(p => p.ProductImages)
-            .Where(o => o.User.Name == username);
+            .Where(o => o.User != null && o.User.Email == email);
 
         if (!orders.Any())
         {
@@ -50,7 +50,7 @@ public class OrdersService: IOrdersService
     }
 
     /// <inheritdoc />
-    public OrderDto GetOrderDtoById(string username, int orderId)
+    public OrderDto GetOrderDtoById(string email, int orderId)
     {
         var order = _dbContext.Orders.AsNoTracking()
             .Include(o => o.User)
@@ -60,7 +60,7 @@ public class OrdersService: IOrdersService
             .Include(o => o.OrderProducts)
                 .ThenInclude(op => op.Product)
                     .ThenInclude(p => p.ProductImages)
-            .FirstOrDefault(o => o.Id == orderId && o.User.Name == username);
+            .FirstOrDefault(o => o.User != null && o.Id == orderId && o.User.Email == email);
 
         if (order == null)
         {

@@ -3,6 +3,7 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { LoginService } from './services/login.service';
 import { LoginApiService } from './services/apiservices/login.apiservice';
+import { LoadingService } from './services/loading.service';
 
 @Component({
     selector: 'app-root',
@@ -13,7 +14,8 @@ import { LoginApiService } from './services/apiservices/login.apiservice';
     ],
     providers: [
         LoginApiService,
-        LoginService
+        LoginService,
+        LoadingService
     ],
     templateUrl: './app.html'
 })

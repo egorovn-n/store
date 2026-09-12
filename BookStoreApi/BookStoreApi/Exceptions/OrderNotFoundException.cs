@@ -3,8 +3,11 @@
 /// <summary>
 /// Исключение "Заказ не найден"
 /// </summary>
-public class OrderNotFoundException: Exception
+public class OrderNotFoundException: BaseAppException
 {
+    /// <inheritdoc />
+    public override int StatusCode { get; } = StatusCodes.Status404NotFound;
+
     private const string OrderNotFoundExceptionString = "Заказ с идентификатором {0} не найден.";
 
     /// <summary>
